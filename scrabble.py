@@ -19,7 +19,7 @@ class Game:
         given_number = input("Give the number of letter you want to place: ")
         letter = self.hand.get_letter(int(given_number))
         self.hand.remove_letter(int(given_number))
-        self.board.update_board(letter, 1, 2)
+        self.board.update_board(letter, 8, 8)
         print("Board: \n")
         self.board.print_board()
         print(f"\n Your letters: {self.hand}")
