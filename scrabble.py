@@ -16,7 +16,7 @@ class Game:
         # print(hand)
 
     def play_letter(self):
-        given_number = int(input("Give the number of letter you want to play: "))
+        given_number = int(input("Number of letter you want to play: "))
         print("Where you want to place your letter")
         given_row = int(input("Number of row: "))
         given_col = int(input("Number of col: "))
