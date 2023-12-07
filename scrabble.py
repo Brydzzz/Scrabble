@@ -5,9 +5,21 @@ from hand import Hand
 
 class Game:
     def __init__(self):
-        self.board = Board()
-        self.bag = Bag()
-        self.hand = Hand(self.bag)
+        self._board = Board()
+        self._bag = Bag()
+        self._hand = Hand(self.bag)
+
+    @property
+    def board(self):
+        return self._board
+
+    @property
+    def bag(self):
+        return self._bag
+
+    @property
+    def hand(self):
+        return self._hand
 
     def print_game(self):
         print("\n Board: \n")

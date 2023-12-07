@@ -3,7 +3,7 @@ import random
 
 class Bag:
     def __init__(self):
-        self.inside = {
+        self._inside = {
             "A": 9,
             "Ą": 1,
             "B": 2,
@@ -39,6 +39,10 @@ class Bag:
             "?": 2,
         }
 
+    @property
+    def inside(self):
+        return self._inside
+
     def draw_letter(self):
         """
         Returns randomly drawn letter from bag.
@@ -48,7 +52,7 @@ class Bag:
         drawn_letter = random.choice(list(self.inside.keys()))
         while not self.check_letter_availability(drawn_letter):
             drawn_letter = random.choice(list(self.inside.keys()))
-        self.inside[drawn_letter] -= 1
+        self._inside[drawn_letter] -= 1
         return drawn_letter
 
     def generate_hand(self):
