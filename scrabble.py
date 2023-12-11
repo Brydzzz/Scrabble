@@ -1,6 +1,7 @@
 from board import Board
 from bag import Bag
 from hand import Hand
+import numpy as np
 
 
 class Game:
@@ -35,9 +36,15 @@ class Game:
         Then prints updated board
         """
         given_number = int(input("Enter letter number: "))
-        print("Where do you want to place your letter?")
-        given_row = int(input("Row number: "))
-        given_col = int(input("Column number: "))
+        board_no_number_guides = self.board._cells[1:, 1:]
+        if np.all(board_no_number_guides == "___"):
+            print("First letter in the game will be placed at (8,8)")
+            given_row = 8
+            given_col = 8
+        else:
+            print("Where do you want to place your letter?")
+            given_row = int(input("Row number: "))
+            given_col = int(input("Column number: "))
         letter = self.hand.get_letter(given_number)
         self.hand.remove_letter(given_number)
         self.board.update_board(letter, given_row, given_col)
