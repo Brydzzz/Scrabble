@@ -28,10 +28,10 @@ class Game:
         # print(hand)
 
     def play_letter(self):
-        given_number = int(input("Number of letter you want to play: "))
+        given_number = int(input("Enter letter number: "))
         print("Where you want to place your letter")
-        given_row = int(input("Number of row: "))
-        given_col = int(input("Number of col: "))
+        given_row = int(input("Row number: "))
+        given_col = int(input("Column number:" "))
         letter = self.hand.get_letter(given_number)
         self.hand.remove_letter(given_number)
         self.board.update_board(letter, given_row, given_col)
