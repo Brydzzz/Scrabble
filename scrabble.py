@@ -22,11 +22,18 @@ class Game:
         return self._hand
 
     def print_game(self):
+        """
+        prints board and player's hand
+        """
         print("\n Board: \n")
         self.board.print_board()
         print(f"\n Your letters: {self.hand} \n")
 
     def place_letter(self):
+        """
+        Gets input from player and places letter on board.
+        Then prints updated board
+        """
         given_number = int(input("Enter letter number: "))
         print("Where do you want to place your letter?")
         given_row = int(input("Row number: "))
@@ -37,6 +44,9 @@ class Game:
         self.print_game()
 
     def letter_round(self):
+        """
+        When player chooses place letter option in play_round() this executes.
+        """
         while True:
             self.place_letter()
             print("Place another letter [A] or end round [E]\n")
@@ -47,6 +57,9 @@ class Game:
                 pass
 
     def redraw_letters_round(self):
+        """
+        Executes when player chooses draw new letters option in play_round()
+        """
         number_of_letters = int(
             input("Enter how many letter you want to redraw: ")
         )
@@ -62,6 +75,9 @@ class Game:
             self._hand.replace_letter(new_letter, index)
 
     def play_round(self, round):
+        """
+        method responsible for player's journey
+        """
         print(f"\nROUND: {round}")
         self.print_game()
         print("What you want to do?")
