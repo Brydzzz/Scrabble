@@ -28,7 +28,7 @@ class Game:
 
     def place_letter(self):
         given_number = int(input("Enter letter number: "))
-        print("Where you want to place your letter?")
+        print("Where do you want to place your letter?")
         given_row = int(input("Row number: "))
         given_col = int(input("Column number: "))
         letter = self.hand.get_letter(given_number)
@@ -37,7 +37,6 @@ class Game:
         self.print_game()
 
     def letter_round(self):
-        self.print_game()
         while True:
             self.place_letter()
             print("Place another letter [A] or end round [E]\n")
@@ -62,20 +61,26 @@ class Game:
             new_letter = self.bag.draw_letter()
             self._hand.replace_letter(new_letter, index)
 
-    def play_round(self):
+    def play_round(self, round):
+        print(f"\nROUND: {round}")
         self.print_game()
         print("What you want to do?")
         print("[1] Place letters")
         print("[2] Draw new letters")
+        print("[3] Exit game")
         action = int(input("Enter number here: "))
         if action == 1:
             self.letter_round()
             self.hand.draw_to_seven_letters(self._bag)
-        else:
+        elif action == 2:
             self.redraw_letters_round()
+        else:
+            exit()
 
 
 if __name__ == "__main__":
     game = Game()
+    round = 1
     while True:
-        game.play_round()
+        game.play_round(round)
+        round += 1
