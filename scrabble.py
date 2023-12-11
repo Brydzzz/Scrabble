@@ -25,11 +25,10 @@ class Game:
         print("\n Board: \n")
         self.board.print_board()
         print(f"\n Your letters: {self.hand} \n")
-        # print(hand)
 
-    def play_letter(self):
+    def place_letter(self):
         given_number = int(input("Enter letter number: "))
-        print("Where you want to place your letter")
+        print("Where you want to place your letter?")
         given_row = int(input("Row number: "))
         given_col = int(input("Column number: "))
         letter = self.hand.get_letter(given_number)
@@ -37,18 +36,33 @@ class Game:
         self.board.update_board(letter, given_row, given_col)
         self.print_game()
 
+    def letter_round(self):
+        self.print_game()
+        while True:
+            self.place_letter()
+            print("Place another letter [A] or end round [E]\n")
+            option = input("Enter your choice here: ")
+            if option.lower() == "e":
+                break
+            elif option.lower() == "a":
+                pass
+
+    def draw_letters_round(self):
+        pass
+
+    def play_round(self):
+        self.print_game()
+        print("What you want to do?")
+        print("[1] Place letters")
+        print("[2] Draw new letters")
+        action = int(input("Enter number here: "))
+        if action == 1:
+            self.letter_round()
+        else:
+            self.draw_letters_round()
+
 
 if __name__ == "__main__":
     game = Game()
-    game.print_game()
-    game.play_letter()
-
-# print(bag.get_left())
-# for i in range(0, 20):
-#     print(f"Try {i} result: {bag.draw_letter()}")
-# print("\n")
-# bag.print_bag()
-# print(bag.get_left())
-# print("\n\n")
-# bag2 = Bag()
-# print(bag2.get_left())
+    while True:
+        game.play_round()
