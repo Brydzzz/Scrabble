@@ -48,6 +48,9 @@ class Game:
         When player chooses place letter option in play_round() this executes.
         """
         while True:
+            if set(self.hand.letters) == {"_"}:
+                print("NO LETTERS LEFT - END OF THE ROUND")
+                break
             self.place_letter()
             print("Place another letter [A] or end round [E]\n")
             option = input("Enter your choice here: ")
