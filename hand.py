@@ -29,7 +29,10 @@ class Hand:
         self._letters[index] = new_letter
 
     def draw_to_seven_letters(self):
+        seven_letters = []
         for letter in self.letters:
             if letter == "_":
                 new_letter = self._bag.draw_letter()
                 letter = new_letter
+            seven_letters.append(letter)
+        self._letters = seven_letters
