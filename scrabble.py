@@ -70,7 +70,7 @@ class Game:
         action = int(input("Enter number here: "))
         if action == 1:
             self.letter_round()
-            self.hand.draw_to_seven_letters()
+            self.hand.draw_to_seven_letters(self._bag)
         else:
             self.redraw_letters_round()
 
