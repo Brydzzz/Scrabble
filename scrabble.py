@@ -47,8 +47,20 @@ class Game:
             elif option.lower() == "a":
                 pass
 
-    def draw_letters_round(self):
-        pass
+    def redraw_letters_round(self):
+        number_of_letters = int(
+            input("Enter how many letter you want to redraw: ")
+        )
+        choosen_letter_indexs = []
+        for _ in range(number_of_letters):
+            letter_index = int(
+                input("Enter number of letter you want to redraw: ")
+            )
+            fixed_letter_index = letter_index - 1
+            choosen_letter_indexs.append(fixed_letter_index)
+        for index in choosen_letter_indexs:
+            new_letter = self.bag.draw_letter()
+            self._hand.replace_letter(new_letter, index)
 
     def play_round(self):
         self.print_game()
@@ -59,7 +71,7 @@ class Game:
         if action == 1:
             self.letter_round()
         else:
-            self.draw_letters_round()
+            self.redraw_letters_round()
 
 
 if __name__ == "__main__":
