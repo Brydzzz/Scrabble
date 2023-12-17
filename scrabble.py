@@ -33,15 +33,19 @@ class Game:
         print(f"{letter_number_guide:>43}\n")
 
     def validate_place_letter_inputs(self, given_number, given_row, given_col):
+        """
+        Validates player inputs from place_letter() function.
+        Returns error message to display and if all requirements are met
+        """
         is_given_number_correct = 1 <= given_number <= 7
         is_given_row_correct = 1 <= given_row <= 15
         is_given_col_correct = 1 <= given_col <= 15
         is_field_empty = True
         is_letter_not_empty = True
-        try:
-            self.board.check_if_cell_empty(given_row, given_col)
-        except IndexError:
-            is_field_empty = False
+        if is_given_row_correct and is_given_col_correct:
+            is_field_empty = self.board.check_if_cell_empty(
+                given_row, given_col
+            )
         if is_given_number_correct:
             is_letter_not_empty = self.hand.get_letter(given_number) != "_"
         inputs_correct = (
