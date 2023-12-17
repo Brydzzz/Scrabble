@@ -50,7 +50,7 @@ class Game:
         self.board.update_board(letter, given_row, given_col)
         self.print_game()
 
-    def letter_round(self):
+    def place_letter_round(self):
         """
         When player chooses place letter option in play_round() this executes.
         """
@@ -94,7 +94,7 @@ class Game:
         print("[3] Exit game")
         action = int(input("Enter number here: "))
         if action == 1:
-            self.letter_round()
+            self.place_letter_round()
             self.hand.draw_to_seven_letters(self._bag)
         elif action == 2:
             self.exchange_letters_round()
