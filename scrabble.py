@@ -62,7 +62,7 @@ class Game:
                 break
             self.place_letter()
             print("Place another letter [1] or end round [2]\n")
-            option = int(input("Enter your choice here: "))
+            option = input("Enter your choice here: ")
             if option == "2":
                 break
             elif option == "1":
