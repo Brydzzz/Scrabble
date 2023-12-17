@@ -28,7 +28,9 @@ class Game:
         """
         print("\n Board: \n")
         self.board.print_board()
-        print(f"\n Your letters: {self.hand} \n")
+        print(f"\nYour letters: {self.hand}")
+        letter_number_guide = "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |"
+        print(f"{letter_number_guide:>43}\n")
 
     def place_letter(self):
         """
@@ -59,11 +61,11 @@ class Game:
                 print("NO LETTERS LEFT - END OF THE ROUND")
                 break
             self.place_letter()
-            print("Place another letter [A] or end round [E]\n")
-            option = input("Enter your choice here: ")
-            if option.lower() == "e":
+            print("Place another letter [1] or end round [2]\n")
+            option = int(input("Enter your choice here: "))
+            if option == "2":
                 break
-            elif option.lower() == "a":
+            elif option == "1":
                 pass
 
     def exchange_letters_round(self):
@@ -88,7 +90,7 @@ class Game:
         """
         print(f"\nROUND: {round}")
         self.print_game()
-        print("What you want to do?")
+        print("What do you want to do?")
         print("[1] Place letters")
         print("[2] Exchange letters")
         print("[3] Exit game")
