@@ -66,23 +66,21 @@ class Game:
             elif option.lower() == "a":
                 pass
 
-    def redraw_letters_round(self):
+    def exchange_letters_round(self):
         """
-        Executes when player chooses draw new letters option in play_round()
+        Executes when player chooses exchange letters option in play_round()
         """
         number_of_letters = int(
-            input("Enter how many letter you want to redraw: ")
+            input("Enter how many letter you want to exchange: ")
         )
-        choosen_letter_indexs = []
-        for _ in range(number_of_letters):
-            letter_index = int(
-                input("Enter number of letter you want to redraw: ")
-            )
-            fixed_letter_index = letter_index - 1
-            choosen_letter_indexs.append(fixed_letter_index)
-        for index in choosen_letter_indexs:
-            new_letter = self.bag.draw_letter()
-            self._hand.replace_letter(new_letter, index)
+        choosen_letter_numbers = [
+            int(input("Enter number of letter you want to exchange: "))
+            for _ in range(number_of_letters)
+        ]
+        for letter_number in choosen_letter_numbers:
+            exchanged_letter = self.hand.get_letter(letter_number)
+            new_letter = self.bag.exchange_letter(exchanged_letter)
+            self._hand.replace_letter(new_letter, letter_number - 1)
 
     def play_round(self, round):
         """
@@ -92,14 +90,14 @@ class Game:
         self.print_game()
         print("What you want to do?")
         print("[1] Place letters")
-        print("[2] Draw new letters")
+        print("[2] Exchange letters")
         print("[3] Exit game")
         action = int(input("Enter number here: "))
         if action == 1:
             self.letter_round()
             self.hand.draw_to_seven_letters(self._bag)
         elif action == 2:
-            self.redraw_letters_round()
+            self.exchange_letters_round()
         else:
             exit()
 

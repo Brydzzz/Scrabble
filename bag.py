@@ -55,6 +55,15 @@ class Bag:
         self._inside[drawn_letter] -= 1
         return drawn_letter
 
+    def exchange_letter(self, exchanged_letter):
+        """
+        Increases exchanged letter count in bag by 1
+        Returns randomly drawn letter
+        """
+        drawn_letter = self.draw_letter()
+        self._inside[exchanged_letter] += 1
+        return drawn_letter
+
     def generate_hand(self):
         hand = []
         for i in range(7):
