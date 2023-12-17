@@ -25,3 +25,9 @@ class Board:
 
     def update_board(self, new_letter, row, col):
         self._cells[row, col] = f" {new_letter} "
+
+    def check_if_cell_empty(self, row: int, col: int):
+        """
+        Check if given cell is empty (contains "___")
+        """
+        return self.access_cell(row, col) == "___"

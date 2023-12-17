@@ -32,25 +32,70 @@ class Game:
         letter_number_guide = "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |"
         print(f"{letter_number_guide:>43}\n")
 
+    def validate_place_letter_inputs(self, given_number, given_row, given_col):
+        is_given_number_correct = 1 <= given_number <= 7
+        is_given_row_correct = 1 <= given_row <= 15
+        is_given_col_correct = 1 <= given_col <= 15
+        is_field_empty = True
+        is_letter_not_empty = True
+        try:
+            self.board.check_if_cell_empty(given_row, given_col)
+        except IndexError:
+            is_field_empty = False
+        if is_given_number_correct:
+            is_letter_not_empty = self.hand.get_letter(given_number) != "_"
+        inputs_correct = (
+            is_given_number_correct,
+            is_given_row_correct,
+            is_given_col_correct,
+            is_field_empty,
+            is_letter_not_empty,
+        )
+        messages = []
+        if not is_given_number_correct:
+            messages.append("Letter number is incorrect")
+        if not is_given_row_correct:
+            messages.append("Row number is incorrect")
+        if not is_given_col_correct:
+            messages.append("Col number is incorrect")
+        if not is_field_empty:
+            messages.append("Choosen field is not empty or doesn't exist")
+        if not is_letter_not_empty:
+            messages.append("Cannot play empty letter")
+
+        return all(inputs_correct), "\n".join(messages)
+
     def place_letter(self):
         """
         Gets input from player and places letter on board.
         Then prints updated board
         """
-        given_number = int(input("Enter letter number: "))
-        board_no_number_guides = self.board._cells[1:, 1:]
-        if np.all(board_no_number_guides == "___"):
-            print("First letter in the game will be placed at (8,8)")
-            given_row = 8
-            given_col = 8
+        while True:
+            try:
+                given_number = int(input("Enter letter number: "))
+                print("Where do you want to place your letter?")
+                given_row = int(input("Row number: "))
+                given_col = int(input("Column number: "))
+                break
+            except ValueError:
+                print("Input has to be an integer\n")
+        inputs_correct, player_message = self.validate_place_letter_inputs(
+            given_number, given_row, given_col
+        )
+        if inputs_correct:
+            if np.all(self.board._cells[1:, 1:] == "___"):
+                print("First letter in the game will be placed at (8,8)")
+                given_row = 8
+                given_col = 8
+            letter = self.hand.get_letter(given_number)
+            self.hand.remove_letter(given_number)
+            self.board.update_board(letter, given_row, given_col)
+            self.print_game()
         else:
-            print("Where do you want to place your letter?")
-            given_row = int(input("Row number: "))
-            given_col = int(input("Column number: "))
-        letter = self.hand.get_letter(given_number)
-        self.hand.remove_letter(given_number)
-        self.board.update_board(letter, given_row, given_col)
-        self.print_game()
+            print("\nERROR")
+            print(player_message)
+            print("\nTry again but with correct input\n")
+            self.place_letter()
 
     def place_letter_round(self):
         """
@@ -94,7 +139,12 @@ class Game:
         print("[1] Place letters")
         print("[2] Exchange letters")
         print("[3] Exit game")
-        action = int(input("Enter number here: "))
+        while True:
+            try:
+                action = int(input("Enter number here: "))
+                break
+            except ValueError:
+                print("Input has to be an integer\n")
         if action == 1:
             self.place_letter_round()
             self.hand.draw_to_seven_letters(self._bag)
