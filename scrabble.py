@@ -2,6 +2,7 @@ from board import Board
 from bag import Bag
 from hand import Hand
 import numpy as np
+from rich import print as rprint
 
 
 class Game:
@@ -78,6 +79,10 @@ class Game:
             try:
                 given_number = int(input("Enter letter number: "))
                 print("Where do you want to place your letter?")
+                rprint(
+                    "[italic]Note: First letter in game will always be placed "
+                    "at [/italic](8,8)"
+                )
                 given_row = int(input("Row number: "))
                 given_col = int(input("Column number: "))
                 break
@@ -96,7 +101,7 @@ class Game:
             self.board.update_board(letter, given_row, given_col)
             self.print_game()
         else:
-            print("\nERROR")
+            rprint("[bold red]\nERROR[/bold red]")
             print(player_message)
             print("\nTry again but with correct input\n")
             self.place_letter()
