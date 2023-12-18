@@ -125,7 +125,7 @@ class Game:
             input("Enter how many letter you want to exchange: ")
         )
         choosen_letter_numbers = [
-            int(input("Enter number of letter you want to exchange: "))
+            int(input("Enter number of a letter you want to exchange: "))
             for _ in range(number_of_letters)
         ]
         for letter_number in choosen_letter_numbers:
