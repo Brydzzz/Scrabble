@@ -3,6 +3,7 @@ from bag import Bag
 from hand import Hand
 import numpy as np
 from rich import print as rprint
+from rich.prompt import IntPrompt
 
 
 class Game:
@@ -38,33 +39,12 @@ class Game:
         Validates player inputs from place_letter() function.
         Returns error message to display and if all requirements are met
         """
-        is_given_number_correct = 1 <= given_number <= 7
-        is_given_row_correct = 1 <= given_row <= 15
-        is_given_col_correct = 1 <= given_col <= 15
-        is_field_empty = True
-        is_letter_not_empty = True
-        if is_given_row_correct and is_given_col_correct:
-            is_field_empty = self.board.check_if_cell_empty(
-                given_row, given_col
-            )
-        if is_given_number_correct:
-            is_letter_not_empty = self.hand.get_letter(given_number) != "_"
-        inputs_correct = (
-            is_given_number_correct,
-            is_given_row_correct,
-            is_given_col_correct,
-            is_field_empty,
-            is_letter_not_empty,
-        )
+        is_field_empty = self.board.check_if_cell_empty(given_row, given_col)
+        is_letter_not_empty = self.hand.get_letter(given_number) != "_"
+        inputs_correct = (is_field_empty, is_letter_not_empty)
         messages = []
-        if not is_given_number_correct:
-            messages.append("Letter number is incorrect")
-        if not is_given_row_correct:
-            messages.append("Row number is incorrect")
-        if not is_given_col_correct:
-            messages.append("Col number is incorrect")
         if not is_field_empty:
-            messages.append("Choosen field is not empty or doesn't exist")
+            messages.append("Choosen field is not empty")
         if not is_letter_not_empty:
             messages.append("Cannot play empty letter")
 
@@ -75,19 +55,34 @@ class Game:
         Gets input from player and places letter on board.
         Then prints updated board
         """
-        while True:
-            try:
-                given_number = int(input("Enter letter number: "))
-                print("Where do you want to place your letter?")
-                rprint(
-                    "[italic]Note: First letter in game will always be placed "
-                    "at [/italic](8,8)"
-                )
-                given_row = int(input("Row number: "))
-                given_col = int(input("Column number: "))
-                break
-            except ValueError:
-                print("Input has to be an integer\n")
+        given_number = IntPrompt.ask(
+            "Enter letter number",
+            choices=["1", "2", "3", "4", "5", "6", "7"],
+        )
+        print("Where do you want to place your letter?")
+        rprint(
+            "[italic]Note: First letter in game will always be placed "
+            "at [/italic](8,8)"
+        )
+        possible_row_col = [
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "10",
+            "11",
+            "12",
+            "13",
+            "14",
+            "15",
+        ]
+        given_row = IntPrompt.ask("Row number", choices=possible_row_col)
+        given_col = IntPrompt.ask("Column number", choices=possible_row_col)
         inputs_correct, player_message = self.validate_place_letter_inputs(
             given_number, given_row, given_col
         )
@@ -116,11 +111,11 @@ class Game:
                 break
             self.place_letter()
             print("Place another letter [1] or end round [2]\n")
-            option = input("Enter your choice here: ")
-            if option == "2":
+            option = IntPrompt.ask(
+                "Enter your choice here", choices=["1", "2"]
+            )
+            if option == 2:
                 break
-            elif option == "1":
-                pass
 
     def exchange_letters_round(self):
         """
@@ -148,12 +143,7 @@ class Game:
         print("[1] Place letters")
         print("[2] Exchange letters")
         print("[3] Exit game")
-        while True:
-            try:
-                action = int(input("Enter number here: "))
-                break
-            except ValueError:
-                print("Input has to be an integer\n")
+        action = IntPrompt.ask("Enter number here", choices=["1", "2", "3"])
         if action == 1:
             self.place_letter_round()
             self.hand.draw_to_seven_letters(self._bag)
