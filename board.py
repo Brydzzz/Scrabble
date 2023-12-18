@@ -31,3 +31,20 @@ class Board:
         Check if given cell is empty (contains "___")
         """
         return self.access_cell(row, col) == "___"
+
+    def check_if_letter_around(self, row: int, col: int):
+        """
+        Check if there is at least one letter around cell
+        If given cell is next to number guide, treats
+        number guide values as "___" to avoid false results
+        """
+        if row - 1 == 0 or col - 1 == 0:
+            left = "___"
+            up = "___"
+        else:
+            left = self.access_cell(row, col - 1)
+            up = self.access_cell(row - 1, col)
+        right = self.access_cell(row, col + 1)
+        down = self.access_cell(row + 1, col)
+        cells = (left, right, up, down)
+        return any(cell != "___" for cell in cells)
