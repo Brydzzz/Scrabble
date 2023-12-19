@@ -38,13 +38,26 @@ class Board:
         If given cell is next to number guide, treats
         number guide values as "___" to avoid false results
         """
-        if row - 1 == 0 or col - 1 == 0:
-            left = "___"
-            up = "___"
-        else:
-            left = self.access_cell(row, col - 1)
-            up = self.access_cell(row - 1, col)
-        right = self.access_cell(row, col + 1)
-        down = self.access_cell(row + 1, col)
+        left = self.access_cell(row, col - 1) if col - 1 != 0 else "___"
+        up = self.access_cell(row - 1, col) if row - 1 != 0 else "___"
+        right = self.access_cell(row, col + 1) if col + 1 != 16 else "___"
+        down = self.access_cell(row + 1, col) if row + 1 != 16 else "___"
         cells = (left, right, up, down)
         return any(cell != "___" for cell in cells)
+
+    def find_words(self):
+        words = []
+        for row in self.cells[1:, 1:]:
+            joined_row = "".join(row)
+            no_spaces_between_letters = joined_row.replace(" ", "")
+            words_with_empty_str = no_spaces_between_letters.replace("_", " ")
+            row_words = words_with_empty_str.split()
+            words.extend(row_words)
+        for col in self.cells[1:, 1:].T:
+            joined_col = "".join(col)
+            no_spaces_between_letters = joined_col.replace(" ", "")
+            words_with_empty_str = no_spaces_between_letters.replace("_", " ")
+            col_words = words_with_empty_str.split()
+            words.extend(col_words)
+        filtered_words = [word for word in words if len(word) != 1]
+        return filtered_words
