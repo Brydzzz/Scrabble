@@ -70,7 +70,6 @@ class Game:
             "Enter letter number",
             choices=["1", "2", "3", "4", "5", "6", "7"],
         )
-        print("Where do you want to place your letter?")
         possible_row_col = [
             "1",
             "2",
@@ -93,6 +92,7 @@ class Game:
             given_row = 8
             given_col = 8
         else:
+            print("Where do you want to place your letter?")
             given_row = IntPrompt.ask("Row number", choices=possible_row_col)
             given_col = IntPrompt.ask(
                 "Column number", choices=possible_row_col
