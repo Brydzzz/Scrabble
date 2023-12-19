@@ -144,10 +144,11 @@ class Game:
             all_words_correct = check_if_words_allowed(file, words_on_board)
         if not all_words_correct or not words_on_board:
             print("Your letters don't form allowed words")
-            rprint("You lose your move in this round:cry:")
+            rprint("You lose your move in this round :cry:")
             self.hand.hand_to_previous_state(hand_before_moves)
             self.board.board_to_previous_state(board_before_moves)
-        print("Everything all right!!!")
+        else:
+            print("Everything all right!!!")
 
     def exchange_letters_round(self):
         """
