@@ -45,19 +45,23 @@ class Board:
         cells = (left, right, up, down)
         return any(cell != "___" for cell in cells)
 
+    def get_word_list_from_dimension(self, dimension_array):
+        """
+        Get a list of word from row or column
+        """
+        joined_dimension_array = "".join(dimension_array)
+        no_spaces_between_letters = joined_dimension_array.replace(" ", "")
+        words_with_empty_str = no_spaces_between_letters.replace("_", " ")
+        dimension_words = words_with_empty_str.split()
+        return dimension_words
+
     def find_words(self):
         words = []
         for row in self.cells[1:, 1:]:
-            joined_row = "".join(row)
-            no_spaces_between_letters = joined_row.replace(" ", "")
-            words_with_empty_str = no_spaces_between_letters.replace("_", " ")
-            row_words = words_with_empty_str.split()
+            row_words = self.get_word_list_from_dimension(row)
             words.extend(row_words)
         for col in self.cells[1:, 1:].T:
-            joined_col = "".join(col)
-            no_spaces_between_letters = joined_col.replace(" ", "")
-            words_with_empty_str = no_spaces_between_letters.replace("_", " ")
-            col_words = words_with_empty_str.split()
+            col_words = self.get_word_list_from_dimension(col)
             words.extend(col_words)
         filtered_words = [word for word in words if len(word) != 1]
         return filtered_words

@@ -1,7 +1,7 @@
 from board import Board
 
 
-def test_check_if_letter_around():
+def test_check_if_letter_around_typical():
     board = Board()
     board.update_board(" A ", 8, 8)
     board.update_board(" B ", 8, 9)
@@ -11,6 +11,34 @@ def test_check_if_letter_around():
     result_2 = board.check_if_letter_around(9, 10)
     assert result_1 is True
     assert result_2 is True
+
+
+def test_check_if_letter_around_corners_true():
+    board = Board()
+    board.update_board(" A ", 1, 2)
+    board.update_board(" B ", 15, 14)
+    board.update_board(" C ", 14, 1)
+    board.update_board(" D ", 1, 14)
+    top_left = board.check_if_letter_around(1, 1)
+    top_right = board.check_if_letter_around(1, 15)
+    down_left = board.check_if_letter_around(15, 1)
+    down_right = board.check_if_letter_around(15, 15)
+    assert top_left is True
+    assert top_right is True
+    assert down_left is True
+    assert down_right is True
+
+
+def test_check_if_letter_around_corners_false():
+    board = Board()
+    top_left = board.check_if_letter_around(1, 1)
+    top_right = board.check_if_letter_around(1, 15)
+    down_left = board.check_if_letter_around(15, 1)
+    down_right = board.check_if_letter_around(15, 15)
+    assert top_left is False
+    assert top_right is False
+    assert down_left is False
+    assert down_right is False
 
 
 def test_find_words_in_rows():
@@ -39,3 +67,17 @@ def test_find_words_in_cols():
     board.update_board(" M ", 10, 10)
     words = board.find_words()
     assert words == ["ALA", "MA", "DOM"]
+
+
+def test_find_words():
+    board = Board()
+    board.update_board(" A ", 8, 8)
+    board.update_board(" L ", 9, 8)
+    board.update_board(" A ", 10, 8)
+    board.update_board(" M ", 12, 8)
+    board.update_board(" A ", 13, 8)
+    board.update_board(" K ", 10, 1)
+    board.update_board(" O ", 10, 2)
+    board.update_board(" T ", 10, 3)
+    words = board.find_words()
+    assert sorted(words) == sorted(["ALA", "MA", "KOT"])
