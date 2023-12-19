@@ -17,6 +17,12 @@ class Hand:
     def __str__(self):
         return "| " + " | ".join(self.letters) + " |"
 
+    def hand_to_previous_state(self, previous_letters):
+        """
+        Changes letters to given previous letters
+        """
+        self._letters = previous_letters
+
     def remove_letter(self, number):
         self._letters[number - 1] = "_"
 

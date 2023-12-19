@@ -7,12 +7,15 @@ def export_words_less_than_lenght(file_handle, word_length):
                 file.write(line)
 
 
-def check_if_word_allowed(file_handle, word):
+def check_if_words_allowed(file_handle, words):
     allowed_words = [line.strip() for line in file_handle.readlines()]
-    return word in allowed_words
+    for word in words:
+        if word.lower() not in allowed_words:
+            return False
+    return True
 
 
 if __name__ == "__main__":
     with open("words.txt", "r", encoding="UTF-8") as file:
         #     export_words_less_than_lenght(file, 6)
-        print(check_if_word_allowed(file, "kubek"))
+        print(check_if_words_allowed(file, "kubek"))

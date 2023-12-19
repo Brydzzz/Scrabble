@@ -16,6 +16,12 @@ class Board:
     def cells(self):
         return self._cells
 
+    def board_to_previous_state(self, previous_cells):
+        """
+        Changes board cells to given previous_cells
+        """
+        self._cells = previous_cells
+
     def print_board(self):
         np.set_printoptions(linewidth=100)
         print(self.cells)

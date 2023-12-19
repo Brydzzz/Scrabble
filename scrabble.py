@@ -4,6 +4,8 @@ from hand import Hand
 import numpy as np
 from rich import print as rprint
 from rich.prompt import IntPrompt, Prompt
+from copy import deepcopy
+from words import check_if_words_allowed
 
 
 class Game:
@@ -123,6 +125,8 @@ class Game:
         """
         When player chooses place letter option in play_round() this executes.
         """
+        hand_before_moves = deepcopy(self.hand.letters)
+        board_before_moves = deepcopy(self.board.cells)
         while True:
             if set(self.hand.letters) == {"_"}:
                 print("NO LETTERS LEFT - END OF THE ROUND")
@@ -134,6 +138,16 @@ class Game:
             )
             if option == 2:
                 break
+        words_on_board = self.board.find_words()
+        print("Checking the words...")
+        with open("words.txt", "r", encoding="UTF-8") as file:
+            all_words_correct = check_if_words_allowed(file, words_on_board)
+        if not all_words_correct or not words_on_board:
+            print("Your letters don't form allowed words")
+            print("You lose your move in this round")
+            self.hand.hand_to_previous_state(hand_before_moves)
+            self.board.board_to_previous_state(board_before_moves)
+        print("Everything all right!!!")
 
     def exchange_letters_round(self):
         """
@@ -165,7 +179,7 @@ class Game:
         print("What do you want to do?")
         print("[1] Place letters")
         print("[2] Exchange letters")
-        print("[3] Exit game")
+        print("[3] End game")
         action = IntPrompt.ask("Enter number here", choices=["1", "2", "3"])
         if action == 1:
             self.place_letter_round()
