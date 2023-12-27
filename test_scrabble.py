@@ -13,6 +13,18 @@ def test_check_one_word_rule_same_col():
     assert game.check_one_word_rule() is True
 
 
+def test_check_one_word_rule_possible_cells_rows_descending_order():
+    game = Game()
+    game.player._played_cells = [(7, 8), (6, 8)]
+    assert game.check_one_word_rule() is True
+
+
+def test_check_one_word_rule_possible_cells_cols_descending_order():
+    game = Game()
+    game.player._played_cells = [(8, 7), (8, 6)]
+    assert game.check_one_word_rule() is True
+
+
 def test_check_one_word_rule_cols_not_correct():
     game = Game()
     game.player._played_cells = [(3, 4), (3, 5), (3, 6), (3, 11)]

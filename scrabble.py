@@ -78,11 +78,13 @@ class Game:
         row_list = [cell[0] for cell in played_cells]
         col_list = [cell[1] for cell in played_cells]
         if len(set(row_list)) == 1:
-            return sorted(col_list) == list(
+            col_list = sorted(col_list)
+            return col_list == list(
                 range(col_list[0], col_list[0] + len(col_list))
             )
         elif len(set(col_list)) == 1:
-            return sorted(row_list) == list(
+            row_list = sorted(row_list)
+            return row_list == list(
                 range(row_list[0], row_list[0] + len(row_list))
             )
         else:
@@ -164,25 +166,26 @@ class Game:
             )
             if option == 2:
                 break
-        words_on_board = self.board.find_all_words()
+        # words_on_board = self.board.find_all_words()
+        new_words = self.board.find_new_words(self.player.played_cells)
         one_word_rule = self.check_one_word_rule()
         print("Checking the words...")
         with open(
             "words_lenght_less_than_6.txt", "r", encoding="UTF-8"
         ) as file:
-            all_words_correct = check_if_words_allowed(file, words_on_board)
+            all_words_correct = check_if_words_allowed(file, new_words)
         if not one_word_rule:
             print("You added letters to more than one word")
             self.hand.hand_to_previous_state(hand_before_moves)
             self.board.board_to_previous_state(board_before_moves)
-        elif not all_words_correct or not words_on_board:
+        elif not all_words_correct or not new_words:
             print("Your letters don't form allowed words")
             rprint("You lose your move in this round :cry:")
             self.hand.hand_to_previous_state(hand_before_moves)
             self.board.board_to_previous_state(board_before_moves)
         else:
             print("Everything all right!!!")
-            self.player.reset_played_cells()
+        self.player.reset_played_cells()
 
     def exchange_letters_round(self):
         """
