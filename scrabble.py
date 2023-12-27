@@ -170,8 +170,9 @@ class Game:
             )
             if option == 2:
                 break
-        # words_on_board = self.board.find_all_words()
-        new_words = self.board.find_new_words(self.player.played_cells)
+        new_words = self.board.find_possible_new_words(
+            self.player.played_cells
+        )
         one_word_rule = self.check_one_word_rule(board_before_moves)
         print("Checking the words...")
         with open(
