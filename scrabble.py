@@ -69,7 +69,7 @@ class Game:
 
         return all(inputs_correct), "\n".join(messages)
 
-    def check_one_word_rule(self):
+    def check_one_word_rule(self, board_before_moves):
         """
         Returns True if player didn't break add letter to only one word rule
         else returns False
@@ -78,15 +78,19 @@ class Game:
         row_list = [cell[0] for cell in played_cells]
         col_list = [cell[1] for cell in played_cells]
         if len(set(row_list)) == 1:
-            col_list = sorted(col_list)
-            return col_list == list(
-                range(col_list[0], col_list[0] + len(col_list))
-            )
+            row = row_list[0]
+            for col_number in range(min(col_list), max(col_list) + 1):
+                if col_number not in col_list:
+                    if board_before_moves[row][col_number] == "___":
+                        return False
+            return True
         elif len(set(col_list)) == 1:
-            row_list = sorted(row_list)
-            return row_list == list(
-                range(row_list[0], row_list[0] + len(row_list))
-            )
+            col = col_list[0]
+            for row_number in range(min(row_list), max(row_list) + 1):
+                if row_number not in row_list:
+                    if board_before_moves[row_number][col] == "___":
+                        return False
+            return True
         else:
             return False
 
@@ -168,7 +172,7 @@ class Game:
                 break
         # words_on_board = self.board.find_all_words()
         new_words = self.board.find_new_words(self.player.played_cells)
-        one_word_rule = self.check_one_word_rule()
+        one_word_rule = self.check_one_word_rule(board_before_moves)
         print("Checking the words...")
         with open(
             "words_lenght_less_than_6.txt", "r", encoding="UTF-8"
