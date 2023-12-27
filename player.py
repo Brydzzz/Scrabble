@@ -1,8 +1,9 @@
 class Player:
-    def __init__(self, name: str, words: list[str] = None):
+    def __init__(self, name: str = "Player  1", words: list[str] = None):
         self._name = name
         self._words = words if words else []
         self._points = 0
+        self._played_cells = []
 
     @property
     def name(self):
@@ -15,6 +16,16 @@ class Player:
     @property
     def points(self):
         return self._points
+
+    @property
+    def played_cells(self):
+        return self._played_cells
+
+    def reset_played_cells(self):
+        self._played_cells = []
+
+    def add_played_cell(self, new_cell: tuple):
+        self._played_cells.append(new_cell)
 
     def set_words(self, new_words: list[str]):
         self._words = new_words
