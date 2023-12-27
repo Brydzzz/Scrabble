@@ -140,7 +140,9 @@ class Game:
                 break
         words_on_board = self.board.find_words()
         print("Checking the words...")
-        with open("words.txt", "r", encoding="UTF-8") as file:
+        with open(
+            "words_lenght_less_than_6.txt", "r", encoding="UTF-8"
+        ) as file:
             all_words_correct = check_if_words_allowed(file, words_on_board)
         if not all_words_correct or not words_on_board:
             print("Your letters don't form allowed words")
