@@ -15,10 +15,10 @@ def test_set_words():
     assert player.words == ["hello", "world"]
 
 
-def test_add_word():
+def test_add_words():
     player = Player("John", ["hello", "world"])
     assert player.words == ["hello", "world"]
-    player.add_word("from")
+    player.add_words(["from"])
     assert player.words == ["hello", "world", "from"]
 
 

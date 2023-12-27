@@ -30,8 +30,8 @@ class Player:
     def set_words(self, new_words: list[str]):
         self._words = new_words
 
-    def add_word(self, new_word: str):
-        self._words.append(new_word)
+    def add_words(self, new_words):
+        self._words.extend(new_words)
 
     def calculate_points(self):
         letter_values = {
