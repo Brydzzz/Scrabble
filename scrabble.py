@@ -6,13 +6,15 @@ from rich import print as rprint
 from rich.prompt import IntPrompt, Prompt
 from copy import deepcopy
 from words import check_if_words_allowed
+from player import Player
 
 
 class Game:
-    def __init__(self):
+    def __init__(self, player_name: str = None):
         self._board = Board()
         self._bag = Bag()
         self._hand = Hand(self.bag)
+        self._player = Player(player_name)
 
     @property
     def board(self):
@@ -25,6 +27,10 @@ class Game:
     @property
     def hand(self):
         return self._hand
+
+    @property
+    def player(self):
+        return self._player
 
     def print_game(self):
         """
@@ -62,6 +68,25 @@ class Game:
             )
 
         return all(inputs_correct), "\n".join(messages)
+
+    def check_one_word_rule(self):
+        """
+        Returns True if player didn't break add letter to only one word rule
+        else returns False
+        """
+        played_cells = self.player.played_cells
+        row_list = [cell[0] for cell in played_cells]
+        col_list = [cell[1] for cell in played_cells]
+        if len(set(row_list)) == 1:
+            return sorted(col_list) == list(
+                range(col_list[0], col_list[0] + len(col_list))
+            )
+        elif len(set(col_list)) == 1:
+            return sorted(row_list) == list(
+                range(row_list[0], row_list[0] + len(row_list))
+            )
+        else:
+            return False
 
     def place_letter(self):
         """
@@ -114,6 +139,7 @@ class Game:
                 letter = blank_value
             self.hand.remove_letter(given_number)
             self.board.update_board(letter, given_row, given_col)
+            self.player.add_played_cell((given_row, given_col))
             self.print_game()
         else:
             rprint("[bold red]\nERROR[/bold red]")
@@ -138,19 +164,25 @@ class Game:
             )
             if option == 2:
                 break
-        words_on_board = self.board.find_words()
+        words_on_board = self.board.find_all_words()
+        one_word_rule = self.check_one_word_rule()
         print("Checking the words...")
         with open(
             "words_lenght_less_than_6.txt", "r", encoding="UTF-8"
         ) as file:
             all_words_correct = check_if_words_allowed(file, words_on_board)
-        if not all_words_correct or not words_on_board:
+        if not one_word_rule:
+            print("You added letters to more than one word")
+            self.hand.hand_to_previous_state(hand_before_moves)
+            self.board.board_to_previous_state(board_before_moves)
+        elif not all_words_correct or not words_on_board:
             print("Your letters don't form allowed words")
             rprint("You lose your move in this round :cry:")
             self.hand.hand_to_previous_state(hand_before_moves)
             self.board.board_to_previous_state(board_before_moves)
         else:
             print("Everything all right!!!")
+            self.player.reset_played_cells()
 
     def exchange_letters_round(self):
         """
@@ -194,7 +226,8 @@ class Game:
 
 
 if __name__ == "__main__":
-    game = Game()
+    player_name = input("Enter your name: ")
+    game = Game(player_name)
     round = 1
     while True:
         game.play_round(round)
