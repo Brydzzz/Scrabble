@@ -82,7 +82,7 @@ def test_find_words():
     assert sorted(words) == sorted(["ALA", "MA", "KOTA"])
 
 
-def test_find_new_words():
+def test_find_possible_new_words():
     board = Board()
     board.update_board(" A ", 8, 8)
     board.update_board(" L ", 9, 8)
@@ -92,5 +92,5 @@ def test_find_new_words():
     board.update_board(" O ", 8, 6)
     board.update_board(" T ", 8, 7)
     played_cells = [(8, 5), (8, 6), (8, 7)]
-    words = board.find_new_words(played_cells)
+    words = board.find_possible_new_words(played_cells)
     assert words == ["KOTA"]

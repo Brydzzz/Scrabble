@@ -2,19 +2,21 @@ import numpy as np
 
 
 class Board:
-    SIZE = 15
-    CENTER = 8
-
     def __init__(self):
         self._cells = np.full((16, 16), "___", dtype=np.dtype("U3"))
         numbers = np.arange(1, 16)
         self._cells[0, 0] = "000"
         self._cells[0, 1:] = np.char.zfill(numbers.astype(str), 3)
         self._cells[1:, 0] = np.char.zfill(numbers.astype(str), 3)
+        self._words = []
 
     @property
     def cells(self):
         return self._cells
+
+    @property
+    def words(self):
+        return self._words
 
     def board_to_previous_state(self, previous_cells):
         """
@@ -75,7 +77,7 @@ class Board:
         filtered_words = [word for word in words if len(word) != 1]
         return filtered_words
 
-    def find_new_words(self, played_cells):
+    def find_possible_new_words(self, played_cells):
         row_list = [cell[0] for cell in played_cells]
         col_list = [cell[1] for cell in played_cells]
         rows_no_duplicates = list(set(row_list))
