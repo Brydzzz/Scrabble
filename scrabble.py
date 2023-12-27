@@ -233,6 +233,9 @@ class Game:
         elif action == 2:
             self.exchange_letters_round()
         else:
+            self.player.calculate_points()
+            points = self.player.points
+            print(f"Congrats {self.player.name}! Your score is: {points}")
             exit()
 
 
