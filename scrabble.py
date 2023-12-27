@@ -190,6 +190,9 @@ class Game:
             self.board.board_to_previous_state(board_before_moves)
         else:
             print("Everything all right!!!")
+            player_words = self.board.get_player_words()
+            self.player.add_words(player_words)
+            self.board.update_words()
         self.player.reset_played_cells()
 
     def exchange_letters_round(self):
