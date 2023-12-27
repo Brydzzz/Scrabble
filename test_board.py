@@ -51,7 +51,7 @@ def test_find_words_in_rows():
     board.update_board(" D ", 10, 8)
     board.update_board(" O ", 10, 9)
     board.update_board(" M ", 10, 10)
-    words = board.find_words()
+    words = board.find_all_words()
     assert words == ["ALA", "MA", "DOM"]
 
 
@@ -65,7 +65,7 @@ def test_find_words_in_cols():
     board.update_board(" D ", 8, 10)
     board.update_board(" O ", 9, 10)
     board.update_board(" M ", 10, 10)
-    words = board.find_words()
+    words = board.find_all_words()
     assert words == ["ALA", "MA", "DOM"]
 
 
@@ -74,10 +74,23 @@ def test_find_words():
     board.update_board(" A ", 8, 8)
     board.update_board(" L ", 9, 8)
     board.update_board(" A ", 10, 8)
-    board.update_board(" M ", 12, 8)
-    board.update_board(" A ", 13, 8)
-    board.update_board(" K ", 10, 1)
-    board.update_board(" O ", 10, 2)
-    board.update_board(" T ", 10, 3)
-    words = board.find_words()
-    assert sorted(words) == sorted(["ALA", "MA", "KOT"])
+    board.update_board(" M ", 10, 7)
+    board.update_board(" K ", 8, 5)
+    board.update_board(" O ", 8, 6)
+    board.update_board(" T ", 8, 7)
+    words = board.find_all_words()
+    assert sorted(words) == sorted(["ALA", "MA", "KOTA"])
+
+
+def test_find_new_words():
+    board = Board()
+    board.update_board(" A ", 8, 8)
+    board.update_board(" L ", 9, 8)
+    board.update_board(" A ", 10, 8)
+    board.update_board(" M ", 10, 7)
+    board.update_board(" K ", 8, 5)
+    board.update_board(" O ", 8, 6)
+    board.update_board(" T ", 8, 7)
+    played_cells = [(8, 5), (8, 6), (8, 7)]
+    words = board.find_new_words(played_cells)
+    assert words == ["KOTA"]

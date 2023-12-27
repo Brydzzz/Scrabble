@@ -61,13 +61,33 @@ class Board:
         dimension_words = words_with_empty_str.split()
         return dimension_words
 
-    def find_words(self):
+    def find_all_words(self):
+        """
+        Returns a list of all words on board
+        """
         words = []
         for row in self.cells[1:, 1:]:
             row_words = self.get_word_list_from_dimension(row)
             words.extend(row_words)
         for col in self.cells[1:, 1:].T:
             col_words = self.get_word_list_from_dimension(col)
+            words.extend(col_words)
+        filtered_words = [word for word in words if len(word) != 1]
+        return filtered_words
+
+    def find_new_words(self, played_cells):
+        row_list = [cell[0] for cell in played_cells]
+        col_list = [cell[1] for cell in played_cells]
+        rows_no_duplicates = list(set(row_list))
+        cols_no_duplicates = list(set(col_list))
+        words = []
+        for row in rows_no_duplicates:
+            row_array = self.cells[row, 1:]
+            row_words = self.get_word_list_from_dimension(row_array)
+            words.extend(row_words)
+        for col in cols_no_duplicates:
+            col_array = self.cells[1:, col]
+            col_words = self.get_word_list_from_dimension(col_array)
             words.extend(col_words)
         filtered_words = [word for word in words if len(word) != 1]
         return filtered_words
