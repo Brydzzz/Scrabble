@@ -94,3 +94,51 @@ def test_find_possible_new_words():
     played_cells = [(8, 5), (8, 6), (8, 7)]
     words = board.find_possible_new_words(played_cells)
     assert words == ["KOTA"]
+
+
+def test_get_player_words(monkeypatch):
+    board = Board()
+    board._words = ["JA", "TY"]
+
+    def fake_find_all_words(w):
+        return ["ALT", "BAS", "JA", "TY"]
+
+    monkeypatch.setattr(Board, "find_all_words", fake_find_all_words)
+    player_words = board.get_player_words()
+    assert sorted(player_words) == ["ALT", "BAS"]
+
+
+def test_get_player_words_empty_board(monkeypatch):
+    board = Board()
+
+    def fake_find_all_words(w):
+        return ["ALT", "BAS"]
+
+    monkeypatch.setattr(Board, "find_all_words", fake_find_all_words)
+    player_words = board.get_player_words()
+    assert sorted(player_words) == ["ALT", "BAS"]
+
+
+def test_get_player_words_duplicates(monkeypatch):
+    board = Board()
+    board._words = ["JA", "TY"]
+
+    def fake_find_all_words(w):
+        return ["ALT", "BAS", "JA", "TY", "JA"]
+
+    monkeypatch.setattr(Board, "find_all_words", fake_find_all_words)
+    player_words = board.get_player_words()
+    assert sorted(player_words) == ["ALT", "BAS", "JA"]
+
+
+def test_update_words(monkeypatch):
+    board = Board()
+    board._words = ["JA", "TY"]
+
+    def fake_find_all_words(w):
+        return ["ALT", "BAS", "JA", "TY", "JA"]
+
+    monkeypatch.setattr(Board, "find_all_words", fake_find_all_words)
+    assert board.words == ["JA", "TY"]
+    board.update_words()
+    assert sorted(board.words) == ["ALT", "BAS", "JA", "JA", "TY"]

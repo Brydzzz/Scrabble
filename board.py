@@ -1,4 +1,5 @@
 import numpy as np
+from collections import Counter
 
 
 class Board:
@@ -93,3 +94,15 @@ class Board:
             words.extend(col_words)
         filtered_words = [word for word in words if len(word) != 1]
         return filtered_words
+
+    def get_player_words(self):
+        player_words = []
+        words_before_move = Counter(self.words)
+        words_after_move = Counter(self.find_all_words())
+        for word, count in words_after_move.items():
+            if count != words_before_move.get(word):
+                player_words.append(word)
+        return player_words
+
+    def update_words(self):
+        self._words = self.find_all_words()
