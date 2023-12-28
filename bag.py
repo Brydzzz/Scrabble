@@ -48,12 +48,16 @@ class Bag:
         Returns randomly drawn letter from bag.
         If letter is not available (its count is 0),
         draws another letter
+        If there no letters left in bag returns "_"
         """
-        drawn_letter = random.choice(list(self.inside.keys()))
-        while not self.check_letter_availability(drawn_letter):
+        if self.get_left() == 0:
+            return "_"
+        else:
             drawn_letter = random.choice(list(self.inside.keys()))
-        self._inside[drawn_letter] -= 1
-        return drawn_letter
+            while not self.check_letter_availability(drawn_letter):
+                drawn_letter = random.choice(list(self.inside.keys()))
+            self._inside[drawn_letter] -= 1
+            return drawn_letter
 
     def exchange_letter(self, exchanged_letter):
         """
