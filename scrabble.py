@@ -157,6 +157,9 @@ class Game:
     def game_to_previous_state(
         self, hand_before_moves, board_before_moves, blanks_before_moves
     ):
+        """
+        Changes hand, board and blanks to previous state
+        """
         self.hand.hand_to_previous_state(hand_before_moves)
         self.board.board_to_previous_state(board_before_moves)
         self.board.blanks_to_previous_state(blanks_before_moves)

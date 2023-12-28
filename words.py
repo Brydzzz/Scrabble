@@ -1,4 +1,7 @@
 def export_words_less_than_lenght(file_handle, word_length):
+    """
+    Creates a new text file with words no longer than give length
+    """
     with open(
         f"words_lenght_less_than_{word_length}.txt", "w", encoding="UTF-8"
     ) as file:
@@ -8,6 +11,10 @@ def export_words_less_than_lenght(file_handle, word_length):
 
 
 def check_if_words_allowed(file_handle, words):
+    """
+    Check if words are allowed.
+    Returns True if all words correct else returns False
+    """
     allowed_words = [line.strip() for line in file_handle.readlines()]
     for word in words:
         if word.lower() not in allowed_words:

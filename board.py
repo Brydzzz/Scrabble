@@ -32,6 +32,9 @@ class Board:
         self._cells = previous_cells
 
     def print_board(self):
+        """
+        Prints board
+        """
         np.set_printoptions(linewidth=100)
         print(self.cells)
 
@@ -60,9 +63,15 @@ class Board:
         return f"Blanks Info:\n{blank_descriptions}\n"
 
     def blanks_to_previous_state(self, previous_blanks):
+        """
+        Changes blanks to given previous_blanks
+        """
         self._blanks = previous_blanks
 
     def access_cell(self, row: int, col: int):
+        """
+        Returns the value of cell for given row and col
+        """
         return self.cells[row, col]
 
     def check_if_cell_empty(self, row: int, col: int):
@@ -137,6 +146,9 @@ class Board:
         return filtered_words
 
     def get_player_words(self):
+        """
+        Returns a list of words that were created by player
+        """
         player_words = []
         words_before_move = Counter(self.words)
         words_after_move = Counter(self.find_all_words())
@@ -146,4 +158,7 @@ class Board:
         return player_words
 
     def update_words(self):
+        """
+        Change words to a list of words found on board
+        """
         self._words = self.find_all_words()

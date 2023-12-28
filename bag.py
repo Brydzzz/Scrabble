@@ -65,6 +65,9 @@ class Bag:
         return drawn_letter
 
     def generate_hand(self):
+        """
+        Returns a "hand" -  a list of seven randomly drawn letters
+        """
         hand = []
         for i in range(7):
             hand.append(self.draw_letter())

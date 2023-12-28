@@ -19,11 +19,14 @@ class Hand:
 
     def hand_to_previous_state(self, previous_letters):
         """
-        Changes letters to given previous letters
+        Changes hand letters to given previous letters
         """
         self._letters = previous_letters
 
     def remove_letter(self, number):
+        """
+        Removes letter from hand - replaces it with "_"
+        """
         self._letters[number - 1] = "_"
 
     def get_letter(self, number):
@@ -31,9 +34,15 @@ class Hand:
         return letter
 
     def replace_letter(self, new_letter, index):
+        """
+        Replaces letter specified by index for new_letter
+        """
         self._letters[index] = new_letter
 
     def draw_to_seven_letters(self, bag: Bag):
+        """
+        Replaces empty letters ("_") with new randomly drawn letters
+        """
         seven_letters = []
         for letter in self.letters:
             if letter == "_":
