@@ -41,6 +41,7 @@ class Game:
         print(f"\nYour letters: {self.hand}")
         letter_number_guide = "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |"
         print(f"{letter_number_guide:>43}\n")
+        print(self.board.blanks_info())
 
     def validate_place_letter_inputs(self, given_number, given_row, given_col):
         """
@@ -142,7 +143,7 @@ class Game:
                     "What letter should blank be?",
                     choices=alphabet,
                 )
-                letter = blank_value
+                self.board.add_blank_info(given_row, given_col, blank_value)
             self.hand.remove_letter(given_number)
             self.board.update_board(letter, given_row, given_col)
             self.player.add_played_cell((given_row, given_col))
@@ -153,12 +154,20 @@ class Game:
             print("\nTry again, but with correct input\n")
             self.place_letter()
 
+    def game_to_previous_state(
+        self, hand_before_moves, board_before_moves, blanks_before_moves
+    ):
+        self.hand.hand_to_previous_state(hand_before_moves)
+        self.board.board_to_previous_state(board_before_moves)
+        self.board.blanks_to_previous_state(blanks_before_moves)
+
     def place_letter_round(self):
         """
         When player chooses place letter option in play_round() this executes.
         """
         hand_before_moves = deepcopy(self.hand.letters)
         board_before_moves = deepcopy(self.board.cells)
+        blanks_before_moves = deepcopy(self.board.blanks)
         while True:
             if set(self.hand.letters) == {"_"}:
                 print("NO LETTERS LEFT - END OF THE ROUND")
@@ -181,13 +190,15 @@ class Game:
             all_words_correct = check_if_words_allowed(file, new_words)
         if not one_word_rule:
             print("You added letters to more than one word")
-            self.hand.hand_to_previous_state(hand_before_moves)
-            self.board.board_to_previous_state(board_before_moves)
+            self.game_to_previous_state(
+                hand_before_moves, board_before_moves, blanks_before_moves
+            )
         elif not all_words_correct or not new_words:
             print("Your letters don't form allowed words")
             rprint("You lose your move in this round :cry:")
-            self.hand.hand_to_previous_state(hand_before_moves)
-            self.board.board_to_previous_state(board_before_moves)
+            self.game_to_previous_state(
+                hand_before_moves, board_before_moves, blanks_before_moves
+            )
         else:
             print("Everything all right!!!")
             player_words = self.board.get_player_words()
@@ -242,6 +253,7 @@ class Game:
 if __name__ == "__main__":
     player_name = input("Enter your name: ")
     game = Game(player_name)
+    game.hand.replace_letter("?", 4)
     round = 1
     while True:
         game.play_round(round)

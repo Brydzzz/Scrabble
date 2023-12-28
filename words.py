@@ -17,5 +17,4 @@ def check_if_words_allowed(file_handle, words):
 
 if __name__ == "__main__":
     with open("words.txt", "r", encoding="UTF-8") as file:
-        #     export_words_less_than_lenght(file, 6)
-        print(check_if_words_allowed(file, "kubek"))
+        export_words_less_than_lenght(file, 6)

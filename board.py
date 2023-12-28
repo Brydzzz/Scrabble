@@ -1,5 +1,6 @@
 import numpy as np
 from collections import Counter
+from copy import deepcopy
 
 
 class Board:
@@ -10,6 +11,7 @@ class Board:
         self._cells[0, 1:] = np.char.zfill(numbers.astype(str), 3)
         self._cells[1:, 0] = np.char.zfill(numbers.astype(str), 3)
         self._words = []
+        self._blanks = []
 
     @property
     def cells(self):
@@ -18,6 +20,10 @@ class Board:
     @property
     def words(self):
         return self._words
+
+    @property
+    def blanks(self):
+        return self._blanks
 
     def board_to_previous_state(self, previous_cells):
         """
@@ -29,11 +35,35 @@ class Board:
         np.set_printoptions(linewidth=100)
         print(self.cells)
 
-    def access_cell(self, row: int, col: int):
-        return self.cells[row, col]
-
     def update_board(self, new_letter, row, col):
         self._cells[row, col] = f" {new_letter} "
+
+    def add_blank_info(self, row: int, col: int, letter_value: str):
+        """
+        Adds tuple with information about blank to blanks attribute
+        """
+        self._blanks.append((row, col, letter_value))
+
+    def blanks_info(self):
+        """
+        Returns information about blanks on board
+        """
+        if self.blanks:
+            blank_descriptions = [
+                f"Blank in {blank[0]} row and {blank[1]} column is {blank[2]}"
+                for blank in self.blanks
+            ]
+
+            blank_descriptions = "\n".join(blank_descriptions)
+        else:
+            blank_descriptions = "There are no blanks on board"
+        return f"Blanks Info:\n{blank_descriptions}\n"
+
+    def blanks_to_previous_state(self, previous_blanks):
+        self._blanks = previous_blanks
+
+    def access_cell(self, row: int, col: int):
+        return self.cells[row, col]
 
     def check_if_cell_empty(self, row: int, col: int):
         """
@@ -79,17 +109,28 @@ class Board:
         return filtered_words
 
     def find_possible_new_words(self, played_cells):
+        """
+        Finds possible new words created by player
+        Checks only rows and cols where player played letters
+        If blank in row replaces it with its letter value
+        """
         row_list = [cell[0] for cell in played_cells]
         col_list = [cell[1] for cell in played_cells]
         rows_no_duplicates = list(set(row_list))
         cols_no_duplicates = list(set(col_list))
         words = []
         for row in rows_no_duplicates:
-            row_array = self.cells[row, 1:]
+            row_array = deepcopy(self.cells[row, 1:])
+            for blank in self.blanks:
+                if row == blank[0]:
+                    row_array[blank[1] - 1] = blank[2]
             row_words = self.get_word_list_from_dimension(row_array)
             words.extend(row_words)
         for col in cols_no_duplicates:
-            col_array = self.cells[1:, col]
+            col_array = deepcopy(self.cells[1:, col])
+            for blank in self.blanks:
+                if col == blank[1]:
+                    col_array[blank[0] - 1] = blank[2]
             col_words = self.get_word_list_from_dimension(col_array)
             words.extend(col_words)
         filtered_words = [word for word in words if len(word) != 1]
