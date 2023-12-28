@@ -24,10 +24,6 @@ class Game:
     def bag(self):
         return self._bag
 
-    # @property
-    # def hand(self):
-    #     return self._hand
-
     @property
     def player(self):
         return self._player
@@ -227,8 +223,20 @@ class Game:
         ]
         for letter_number in choosen_letter_numbers:
             exchanged_letter = self.player.hand.get_letter(letter_number)
-            new_letter = self.bag.exchange_letter(exchanged_letter)
-            self._player._hand.replace_letter(new_letter, letter_number - 1)
+            try:
+                new_letter = self.bag.exchange_letter(exchanged_letter)
+                self._player._hand.replace_letter(
+                    new_letter, letter_number - 1
+                )
+            except KeyError:
+                print(f"Cannot exchange letter with number {letter_number}")
+                pass
+
+    def game_ending(self):
+        self.player.calculate_points()
+        points = self.player.points
+        print(f"Congrats {self.player.name}! Your score is: {points}")
+        exit()
 
     def play_round(self, round):
         """
@@ -245,19 +253,26 @@ class Game:
             self.place_letter_round()
             self.player.hand.draw_to_seven_letters(self._bag)
         elif action == 2:
-            self.exchange_letters_round()
+            if self.bag.get_left() == 0:
+                print("CANNOT EXCHANGE LETTERS - BAG IS EMPTY")
+            else:
+                self.exchange_letters_round()
         else:
-            self.player.calculate_points()
-            points = self.player.points
-            print(f"Congrats {self.player.name}! Your score is: {points}")
-            exit()
+            self.game_ending()
+
+    def play_game(self):
+        round = 1
+        while True:
+            if (
+                self.bag.get_left() == 0 and set(self.player.hand.letters)
+            ) == {"_"}:
+                print("END OF THE GAME")
+                self.game_ending()
+            self.play_round(round)
+            round += 1
 
 
 if __name__ == "__main__":
     player_name = input("Enter your name: ")
     game = Game(player_name)
-    game.player.hand.replace_letter("?", 4)
-    round = 1
-    while True:
-        game.play_round(round)
-        round += 1
+    game.play_game()

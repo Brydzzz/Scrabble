@@ -76,3 +76,91 @@ def test_check_one_word_adde_to_two_words_col():
     board_before_moves = game.board.cells
     game.player._played_cells = [(4, 3), (5, 3), (6, 3), (8, 3), (11, 3)]
     assert game.check_one_word_rule(board_before_moves) is False
+
+
+def play_game_end_empty_bag_few_letters_left():
+    player_name = "end game"
+    game = Game(player_name)
+    game.bag._inside = {
+        "A": 0,
+        "Ą": 0,
+        "B": 0,
+        "C": 0,
+        "Ć": 0,
+        "D": 0,
+        "E": 0,
+        "Ę": 0,
+        "F": 0,
+        "G": 0,
+        "H": 0,
+        "I": 0,
+        "J": 0,
+        "K": 0,
+        "L": 0,
+        "Ł": 0,
+        "M": 0,
+        "N": 0,
+        "Ń": 0,
+        "O": 0,
+        "Ó": 0,
+        "P": 0,
+        "R": 0,
+        "S": 0,
+        "Ś": 0,
+        "T": 0,
+        "U": 0,
+        "W": 0,
+        "Y": 0,
+        "Z": 0,
+        "Ź": 0,
+        "Ż": 0,
+        "?": 0,
+    }
+    game.player.hand._letters = ["T", "O", "_", "_", "_", "_", "_"]
+    game.play_game()
+
+
+def play_game_one_letter_in_bag():
+    player_name = "end game"
+    game = Game(player_name)
+    game.bag._inside = {
+        "A": 1,
+        "Ą": 0,
+        "B": 0,
+        "C": 0,
+        "Ć": 0,
+        "D": 0,
+        "E": 0,
+        "Ę": 0,
+        "F": 0,
+        "G": 0,
+        "H": 0,
+        "I": 0,
+        "J": 0,
+        "K": 0,
+        "L": 0,
+        "Ł": 0,
+        "M": 0,
+        "N": 0,
+        "Ń": 0,
+        "O": 0,
+        "Ó": 0,
+        "P": 0,
+        "R": 0,
+        "S": 0,
+        "Ś": 0,
+        "T": 0,
+        "U": 0,
+        "W": 0,
+        "Y": 0,
+        "Z": 0,
+        "Ź": 0,
+        "Ż": 0,
+        "?": 0,
+    }
+    game.player.hand._letters = ["T", "O", "_", "_", "_", "_", "_"]
+    game.play_game()
+
+
+# play_game_end_empty_bag_few_letters_left()
+# play_game_one_letter_in_bag()
