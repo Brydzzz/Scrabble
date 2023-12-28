@@ -13,8 +13,8 @@ class Game:
     def __init__(self, player_name: str = None):
         self._board = Board()
         self._bag = Bag()
-        self._hand = Hand(self.bag)
-        self._player = Player(player_name)
+        hand = Hand(self.bag)
+        self._player = Player(hand, player_name)
 
     @property
     def board(self):
@@ -24,9 +24,9 @@ class Game:
     def bag(self):
         return self._bag
 
-    @property
-    def hand(self):
-        return self._hand
+    # @property
+    # def hand(self):
+    #     return self._hand
 
     @property
     def player(self):
@@ -38,7 +38,7 @@ class Game:
         """
         print("\n Board: \n")
         self.board.print_board()
-        print(f"\nYour letters: {self.hand}")
+        print(f"\nYour letters: {self.player.hand}")
         letter_number_guide = "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |"
         print(f"{letter_number_guide:>43}\n")
         print(self.board.blanks_info())
@@ -49,7 +49,7 @@ class Game:
         Returns error message to display and if all requirements are met
         """
         is_field_empty = self.board.check_if_cell_empty(given_row, given_col)
-        is_letter_not_empty = self.hand.get_letter(given_number) != "_"
+        is_letter_not_empty = self.player.hand.get_letter(given_number) != "_"
         is_adjacent_to_letter = self.board.check_if_letter_around(
             given_row, given_col
         ) or (given_row, given_col) == (8, 8)
@@ -135,7 +135,7 @@ class Game:
             given_number, given_row, given_col
         )
         if inputs_correct:
-            letter = self.hand.get_letter(given_number)
+            letter = self.player.hand.get_letter(given_number)
             if letter == "?":
                 alphabet = list(self.bag.inside.keys())
                 alphabet.remove("?")
@@ -144,7 +144,7 @@ class Game:
                     choices=alphabet,
                 )
                 self.board.add_blank_info(given_row, given_col, blank_value)
-            self.hand.remove_letter(given_number)
+            self.player.hand.remove_letter(given_number)
             self.board.update_board(letter, given_row, given_col)
             self.player.add_played_cell((given_row, given_col))
             self.print_game()
@@ -160,7 +160,7 @@ class Game:
         """
         Changes hand, board and blanks to previous state
         """
-        self.hand.hand_to_previous_state(hand_before_moves)
+        self.player.hand.hand_to_previous_state(hand_before_moves)
         self.board.board_to_previous_state(board_before_moves)
         self.board.blanks_to_previous_state(blanks_before_moves)
 
@@ -168,11 +168,11 @@ class Game:
         """
         When player chooses place letter option in play_round() this executes.
         """
-        hand_before_moves = deepcopy(self.hand.letters)
+        hand_before_moves = deepcopy(self.player.hand.letters)
         board_before_moves = deepcopy(self.board.cells)
         blanks_before_moves = deepcopy(self.board.blanks)
         while True:
-            if set(self.hand.letters) == {"_"}:
+            if set(self.player.hand.letters) == {"_"}:
                 print("NO LETTERS LEFT - END OF THE ROUND")
                 break
             self.place_letter()
@@ -226,9 +226,9 @@ class Game:
             for _ in range(number_of_letters)
         ]
         for letter_number in choosen_letter_numbers:
-            exchanged_letter = self.hand.get_letter(letter_number)
+            exchanged_letter = self.player.hand.get_letter(letter_number)
             new_letter = self.bag.exchange_letter(exchanged_letter)
-            self._hand.replace_letter(new_letter, letter_number - 1)
+            self._player._hand.replace_letter(new_letter, letter_number - 1)
 
     def play_round(self, round):
         """
@@ -243,7 +243,7 @@ class Game:
         action = IntPrompt.ask("Enter number here", choices=["1", "2", "3"])
         if action == 1:
             self.place_letter_round()
-            self.hand.draw_to_seven_letters(self._bag)
+            self.player.hand.draw_to_seven_letters(self._bag)
         elif action == 2:
             self.exchange_letters_round()
         else:
@@ -256,7 +256,7 @@ class Game:
 if __name__ == "__main__":
     player_name = input("Enter your name: ")
     game = Game(player_name)
-    game.hand.replace_letter("?", 4)
+    game.player.hand.replace_letter("?", 4)
     round = 1
     while True:
         game.play_round(round)

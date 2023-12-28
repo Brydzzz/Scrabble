@@ -1,9 +1,15 @@
+from hand import Hand
+
+
 class Player:
-    def __init__(self, name: str = "Player  1", words: list[str] = None):
+    def __init__(
+        self, hand: Hand, name: str = "Player  1", words: list[str] = None
+    ):
         self._name = name
         self._words = words if words else []
         self._points = 0
         self._played_cells = []
+        self._hand = hand
 
     @property
     def name(self):
@@ -20,6 +26,10 @@ class Player:
     @property
     def played_cells(self):
         return self._played_cells
+
+    @property
+    def hand(self):
+        return self._hand
 
     def reset_played_cells(self):
         self._played_cells = []
