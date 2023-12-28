@@ -64,13 +64,21 @@ def check_if_words_allowed(file_handle, words):
     return True
 
 
+def check_the_words(words):
+    """
+    Returns True if words are in allowed_words(are in words_binary.txt file)
+    else return False
+    """
+    with open("words_binary.txt", "r", encoding="UTF-8") as file:
+        allowed_words = [line.strip() for line in file.readlines()]
+        return check_if_words_allowed_binary(allowed_words, words)
+
+
 if __name__ == "__main__":
     # with open("words.txt", "r", encoding="UTF-8") as file:
     #     export_words_less_than_lenght(file, 6)
     # with open("words.txt", "r", encoding="UTF-8") as file:
     #     sort_words_for_binary_search(file)
     my_words = ["ŻAK", "OSM", "RABARBAR"]
-    with open("words_binary.txt", "r", encoding="UTF-8") as f:
-        allowed_words = [line.strip() for line in f.readlines()]
-        result = check_if_words_allowed_binary(allowed_words, my_words)
+    result = check_the_words(my_words)
     print(result)

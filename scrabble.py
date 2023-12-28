@@ -5,7 +5,7 @@ import numpy as np
 from rich import print as rprint
 from rich.prompt import IntPrompt, Prompt
 from copy import deepcopy
-from words import check_if_words_allowed
+from words import check_the_words
 from player import Player
 
 
@@ -183,10 +183,7 @@ class Game:
         )
         one_word_rule = self.check_one_word_rule(board_before_moves)
         print("Checking the words...")
-        with open(
-            "words_lenght_less_than_6.txt", "r", encoding="UTF-8"
-        ) as file:
-            all_words_correct = check_if_words_allowed(file, new_words)
+        all_words_correct = check_the_words(new_words)
         if not one_word_rule:
             print("You added letters to more than one word")
             self.game_to_previous_state(
