@@ -3,8 +3,10 @@ from bag import Bag
 
 class Hand:
     """
-    :param letters: letters in hand
-    :type letters: list
+    Attributes
+    ----------
+    letters : list
+        a list of letters in hand
     """
 
     def __init__(self, bag: Bag):

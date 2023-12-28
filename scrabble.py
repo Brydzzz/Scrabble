@@ -10,6 +10,17 @@ from player import Player
 
 
 class Game:
+    """
+    Attributes
+    ----------
+    board : Board
+        game's board
+    bag : Bag
+        game's bag
+    player: Player
+        player that playes the game
+    """
+
     def __init__(self, player_name: str = None):
         self._board = Board()
         self._bag = Bag()
@@ -230,6 +241,9 @@ class Game:
                 pass
 
     def game_ending(self):
+        """
+        displayes end game message and quits game
+        """
         self.player.calculate_points()
         points = self.player.points
         print(f"Congrats {self.player.name}! Your score is: {points}")

@@ -2,6 +2,22 @@ from hand import Hand
 
 
 class Player:
+    """
+    Attributes
+    ----------
+    name : str
+        player's name
+    words : list
+        list of words that player created
+    points: int
+        player's points
+    played_cells: list
+        list of cells played by player in a round
+        each cell is represent as tuple - (row, col)
+    hand: Hand
+        player's hand - letters they have
+    """
+
     def __init__(
         self, hand: Hand, name: str = "Player  1", words: list[str] = None
     ):

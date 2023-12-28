@@ -4,6 +4,17 @@ from copy import deepcopy
 
 
 class Board:
+    """
+    Attributes
+    ----------
+    cells : numpy 2d array
+        board cells represented as 2d array
+    words : list
+        list of words currently on board
+    blanks: list
+        list of tuples with info about blanks.
+        Each tuple contains row and column where blank is and its letter value
+    """
     def __init__(self):
         self._cells = np.full((16, 16), "___", dtype=np.dtype("U3"))
         numbers = np.arange(1, 16)

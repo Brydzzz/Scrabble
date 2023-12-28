@@ -2,6 +2,13 @@ import random
 
 
 class Bag:
+    """
+    Attributes
+    ----------
+    inside: dict
+        inside of the bag, dict keys - letters
+        and dict values - amount of a letter in a bag
+    """
     def __init__(self):
         self._inside = {
             "A": 9,
