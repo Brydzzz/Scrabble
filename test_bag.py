@@ -98,3 +98,15 @@ def test_draw_letter_no_letters(monkeypatch):
     drawn_letter = bag.draw_letter()
     assert bag.inside["A"] == 0
     assert drawn_letter == "_"
+
+
+def test_draw_letter_drawn_letter_not_available(monkeypatch):
+    bag = Bag()
+    bag._inside["A"] = 0
+    b_count = bag.inside["B"]
+    mock_choice = iter(["A", "B"])
+    monkeypatch.setattr("random.choice", lambda _: next(mock_choice))
+    drawn_letter = bag.draw_letter()
+    assert bag.inside["A"] == 0
+    assert bag.inside["B"] == b_count - 1
+    assert drawn_letter == "B"
