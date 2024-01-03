@@ -15,6 +15,7 @@ class Board:
         list of tuples with info about blanks.
         Each tuple contains row and column where blank is and its letter value
     """
+
     def __init__(self):
         self._cells = np.full((16, 16), "___", dtype=np.dtype("U3"))
         numbers = np.arange(1, 16)
@@ -46,8 +47,10 @@ class Board:
         """
         Prints board
         """
-        np.set_printoptions(linewidth=100)
-        print(self.cells)
+        for row in self.cells:
+            row_formatted = " | ".join(row).replace("_", " ")
+            print(row_formatted)
+            print("-" * len(row_formatted))
 
     def update_board(self, new_letter, row, col):
         self._cells[row, col] = f" {new_letter} "
