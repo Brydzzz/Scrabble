@@ -1,5 +1,5 @@
 from bag import Bag
-from constants import LETTERS_BAG_COUNT
+from constants import LETTERS_BAG_COUNT, HAND_EMPTY_LETTER_SYMBOL
 
 
 def test_create_bag():
@@ -64,7 +64,7 @@ def test_draw_letter_no_letters(monkeypatch):
     monkeypatch.setattr("random.choice", draw_a)
     drawn_letter = bag.draw_letter()
     assert bag.inside["A"] == 0
-    assert drawn_letter == "_"
+    assert drawn_letter == HAND_EMPTY_LETTER_SYMBOL
 
 
 def test_draw_letter_drawn_letter_not_available(monkeypatch):

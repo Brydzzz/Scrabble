@@ -102,16 +102,20 @@ class Game:
         if len(set(row_list)) == 1:
             row = row_list[0]
             for col_number in range(min(col_list), max(col_list) + 1):
-                if col_number not in col_list:  # @TODO make this 2 ifs a 1 if
-                    if board_before_moves[row][col_number] == NO_LETTER_SYMBOL:
-                        return False
+                if (
+                    col_number not in col_list
+                    and board_before_moves[row][col_number] == NO_LETTER_SYMBOL
+                ):
+                    return False
             return True
         elif len(set(col_list)) == 1:
             col = col_list[0]
             for row_number in range(min(row_list), max(row_list) + 1):
-                if row_number not in row_list:
-                    if board_before_moves[row_number][col] == NO_LETTER_SYMBOL:
-                        return False
+                if (
+                    row_number not in row_list
+                    and board_before_moves[row_number][col] == NO_LETTER_SYMBOL
+                ):
+                    return False
             return True
         else:
             return False

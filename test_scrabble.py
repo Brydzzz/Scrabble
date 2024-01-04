@@ -1,4 +1,5 @@
 from scrabble import Game
+from constants import HAND_EMPTY_LETTER_SYMBOL
 
 
 def test_check_one_word_rule_same_row():
@@ -116,7 +117,15 @@ def play_game_end_empty_bag_few_letters_left():
         "Ż": 0,
         "?": 0,
     }
-    game.player.hand._letters = ["T", "O", "_", "_", "_", "_", "_"]
+    game.player.hand._letters = [
+        "T",
+        "O",
+        HAND_EMPTY_LETTER_SYMBOL,
+        HAND_EMPTY_LETTER_SYMBOL,
+        HAND_EMPTY_LETTER_SYMBOL,
+        HAND_EMPTY_LETTER_SYMBOL,
+        HAND_EMPTY_LETTER_SYMBOL,
+    ]
     game.play_game()
 
 
@@ -158,7 +167,15 @@ def play_game_one_letter_in_bag():
         "Ż": 0,
         "?": 0,
     }
-    game.player.hand._letters = ["T", "O", "_", "_", "_", "_", "_"]
+    game.player.hand._letters = [
+        "T",
+        "O",
+        HAND_EMPTY_LETTER_SYMBOL,
+        HAND_EMPTY_LETTER_SYMBOL,
+        HAND_EMPTY_LETTER_SYMBOL,
+        HAND_EMPTY_LETTER_SYMBOL,
+        HAND_EMPTY_LETTER_SYMBOL,
+    ]
     game.play_game()
 
 
