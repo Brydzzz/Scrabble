@@ -92,8 +92,8 @@ def test_check_one_word_adde_to_two_words_col():
 
 
 def play_game_end_empty_bag_few_letters_left():
-    player_name = "end game"
-    game = Game(player_name)
+    players_names = ["end game"]
+    game = Game("single", players_names)
     game.bag._inside = {
         "A": 0,
         "Ą": 0,
@@ -129,7 +129,7 @@ def play_game_end_empty_bag_few_letters_left():
         "Ż": 0,
         "?": 0,
     }
-    game.player.hand._letters = [
+    game.get_player(0).hand._letters = [
         "T",
         "O",
         HAND_EMPTY_LETTER_SYMBOL,
@@ -142,8 +142,8 @@ def play_game_end_empty_bag_few_letters_left():
 
 
 def play_game_one_letter_in_bag():
-    player_name = "end game"
-    game = Game(player_name)
+    players_names = ["end game"]
+    game = Game("single", players_names)
     game.bag._inside = {
         "A": 1,
         "Ą": 0,
@@ -179,7 +179,7 @@ def play_game_one_letter_in_bag():
         "Ż": 0,
         "?": 0,
     }
-    game.player.hand._letters = [
+    game.get_player(0).hand._letters = [
         "T",
         "O",
         HAND_EMPTY_LETTER_SYMBOL,

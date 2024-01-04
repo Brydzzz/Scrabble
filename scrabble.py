@@ -62,6 +62,12 @@ class Game:
     def get_player(self, index):
         return self._players[index]
 
+    def check_if_players_hands_empty(self):
+        for player in self.players:
+            if set(player.hand.letters) == {HAND_EMPTY_LETTER_SYMBOL}:
+                return True
+        return False
+
     def print_game(self, player_index):
         """
         prints board and player's hand
@@ -313,7 +319,7 @@ class Game:
                 print(f"{loser} lost this time :( They scored {loser_points}")
         else:
             self.get_player(0).calculate_points()
-            points = self.player.points
+            points = self.get_player(0).points
             print(
                 f"Congrats {self.get_player(0).name}! Your score is: {points}"
             )
@@ -329,7 +335,6 @@ class Game:
         print("[1] Place letters")
         print("[2] Exchange letters")
         print("[3] End game")
-        # TODO opcja end game dostepna tylko do wyboru przez pierwszego gracza
         action = IntPrompt.ask("Enter number here", choices=["1", "2", "3"])
         if action == 1:
             self.place_letter_round(player_index)
@@ -346,8 +351,9 @@ class Game:
         round = 1
         while True:
             if (
-                self.bag.get_left() == 0 and set(self.player.hand.letters)
-            ) == {HAND_EMPTY_LETTER_SYMBOL}:
+                self.bag.get_left() == 0
+                and self.check_if_players_hands_empty()
+            ):
                 print("END OF THE GAME")
                 self.game_ending()
             if self.game_mode == "single":
