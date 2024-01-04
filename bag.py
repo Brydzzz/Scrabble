@@ -1,4 +1,6 @@
 import random
+from constants import LETTERS_BAG_COUNT, HAND_EMPTY_LETTER_SYMBOL, HAND_SIZE
+from copy import deepcopy
 
 
 class Bag:
@@ -9,42 +11,9 @@ class Bag:
         inside of the bag, dict keys - letters
         and dict values - amount of a letter in a bag
     """
+
     def __init__(self):
-        self._inside = {
-            "A": 9,
-            "Ą": 1,
-            "B": 2,
-            "C": 3,
-            "Ć": 1,
-            "D": 3,
-            "E": 7,
-            "Ę": 1,
-            "F": 1,
-            "G": 2,
-            "H": 2,
-            "I": 8,
-            "J": 2,
-            "K": 3,
-            "L": 3,
-            "Ł": 2,
-            "M": 3,
-            "N": 5,
-            "Ń": 1,
-            "O": 6,
-            "Ó": 1,
-            "P": 3,
-            "R": 4,
-            "S": 4,
-            "Ś": 1,
-            "T": 3,
-            "U": 2,
-            "W": 4,
-            "Y": 4,
-            "Z": 5,
-            "Ź": 1,
-            "Ż": 1,
-            "?": 2,
-        }
+        self._inside = deepcopy(LETTERS_BAG_COUNT)
 
     @property
     def inside(self):
@@ -55,10 +24,11 @@ class Bag:
         Returns randomly drawn letter from bag.
         If letter is not available (its count is 0),
         draws another letter
-        If there no letters left in bag returns "_"
+        If there no letters left in bag
+        returns HAND_EMPTY_LETTER_SYMBOL from constans
         """
         if self.get_left() == 0:
-            return "_"
+            return HAND_EMPTY_LETTER_SYMBOL
         else:
             drawn_letter = random.choice(list(self.inside.keys()))
             while not self.check_letter_availability(drawn_letter):
@@ -80,7 +50,7 @@ class Bag:
         Returns a "hand" -  a list of seven randomly drawn letters
         """
         hand = []
-        for i in range(7):
+        for i in range(HAND_SIZE):
             hand.append(self.draw_letter())
         return hand
 

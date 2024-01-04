@@ -1,4 +1,5 @@
 from hand import Hand
+from constants import LETTERS_VALUES
 
 
 class Player:
@@ -60,41 +61,7 @@ class Player:
         self._words.extend(new_words)
 
     def calculate_points(self):
-        letter_values = {
-            "A": 1,
-            "Ą": 5,
-            "B": 3,
-            "C": 2,
-            "Ć": 6,
-            "D": 2,
-            "E": 1,
-            "Ę": 5,
-            "F": 5,
-            "G": 3,
-            "H": 3,
-            "I": 1,
-            "J": 3,
-            "K": 2,
-            "L": 2,
-            "Ł": 3,
-            "M": 2,
-            "N": 1,
-            "Ń": 7,
-            "O": 1,
-            "Ó": 5,
-            "P": 2,
-            "R": 1,
-            "S": 1,
-            "Ś": 5,
-            "T": 2,
-            "U": 3,
-            "W": 1,
-            "Y": 2,
-            "Z": 1,
-            "Ź": 9,
-            "Ż": 5,
-            "?": 0,
-        }
+        letter_values = LETTERS_VALUES
         total_points = 0
         for word in self.words:
             for char in word.upper():

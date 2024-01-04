@@ -7,6 +7,14 @@ from rich.prompt import IntPrompt, Prompt
 from copy import deepcopy
 from words import check_the_words
 from player import Player
+from constants import (
+    HAND_EMPTY_LETTER_SYMBOL,
+    BOARD_CENTER,
+    NO_LETTER_SYMBOL,
+    HAND_LETTER_NUMBERS,
+    ROW_COL_NUMBERS,
+    BLANK_POSSIBLE_VALUES,
+)
 
 
 class Game:
@@ -45,9 +53,11 @@ class Game:
         """
         print("\n Board: \n")
         self.board.print_board()
-        print(f"\nYour letters: {self.player.hand}")
-        letter_number_guide = "| 1 | 2 | 3 | 4 | 5 | 6 | 7 |"
-        print(f"{letter_number_guide:>43}\n")
+        hand_info_message = f"\nYour letters: {self.player.hand}"
+        print(hand_info_message)
+        letter_number_guide = " | ".join(HAND_LETTER_NUMBERS)
+        offset = len(hand_info_message) - 1
+        print(f"| {letter_number_guide} |".rjust(offset) + "\n")
         print(self.board.blanks_info())
 
     def validate_place_letter_inputs(self, given_number, given_row, given_col):
@@ -56,10 +66,14 @@ class Game:
         Returns error message to display and if all requirements are met
         """
         is_field_empty = self.board.check_if_cell_empty(given_row, given_col)
-        is_letter_not_empty = self.player.hand.get_letter(given_number) != "_"
-        is_adjacent_to_letter = self.board.check_if_letter_around(
-            given_row, given_col
-        ) or (given_row, given_col) == (8, 8)
+        is_letter_not_empty = (
+            self.player.hand.get_letter(given_number)
+            != HAND_EMPTY_LETTER_SYMBOL
+        )
+        is_adjacent_to_letter = (
+            self.board.check_if_letter_around(given_row, given_col)
+            or (given_row, given_col) == BOARD_CENTER
+        )
         inputs_correct = (
             is_field_empty,
             is_letter_not_empty,
@@ -88,15 +102,15 @@ class Game:
         if len(set(row_list)) == 1:
             row = row_list[0]
             for col_number in range(min(col_list), max(col_list) + 1):
-                if col_number not in col_list:
-                    if board_before_moves[row][col_number] == "___":
+                if col_number not in col_list:  # @TODO make this 2 ifs a 1 if
+                    if board_before_moves[row][col_number] == NO_LETTER_SYMBOL:
                         return False
             return True
         elif len(set(col_list)) == 1:
             col = col_list[0]
             for row_number in range(min(row_list), max(row_list) + 1):
                 if row_number not in row_list:
-                    if board_before_moves[row_number][col] == "___":
+                    if board_before_moves[row_number][col] == NO_LETTER_SYMBOL:
                         return False
             return True
         else:
@@ -109,46 +123,24 @@ class Game:
         """
         given_number = IntPrompt.ask(
             "Enter letter number",
-            choices=["1", "2", "3", "4", "5", "6", "7"],
+            choices=HAND_LETTER_NUMBERS,
         )
-        possible_row_col = [
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
-            "10",
-            "11",
-            "12",
-            "13",
-            "14",
-            "15",
-        ]
-        if np.all(self.board._cells[1:, 1:] == "___"):
+        if np.all(self.board._cells[1:, 1:] == NO_LETTER_SYMBOL):
             print("First letter in the game will be placed at (8,8)")
-            given_row = 8
-            given_col = 8
+            given_row, given_col = BOARD_CENTER
         else:
             print("Where do you want to place your letter?")
-            given_row = IntPrompt.ask("Row number", choices=possible_row_col)
-            given_col = IntPrompt.ask(
-                "Column number", choices=possible_row_col
-            )
+            given_row = IntPrompt.ask("Row number", choices=ROW_COL_NUMBERS)
+            given_col = IntPrompt.ask("Column number", choices=ROW_COL_NUMBERS)
         inputs_correct, player_message = self.validate_place_letter_inputs(
             given_number, given_row, given_col
         )
         if inputs_correct:
             letter = self.player.hand.get_letter(given_number)
             if letter == "?":
-                alphabet = list(self.bag.inside.keys())
-                alphabet.remove("?")
                 blank_value = Prompt.ask(
                     "What letter should blank be?",
-                    choices=alphabet,
+                    choices=BLANK_POSSIBLE_VALUES,
                 )
                 self.board.add_blank_info(given_row, given_col, blank_value)
             self.player.hand.remove_letter(given_number)
@@ -179,7 +171,7 @@ class Game:
         board_before_moves = deepcopy(self.board.cells)
         blanks_before_moves = deepcopy(self.board.blanks)
         while True:
-            if set(self.player.hand.letters) == {"_"}:
+            if set(self.player.hand.letters) == {HAND_EMPTY_LETTER_SYMBOL}:
                 print("NO LETTERS LEFT - END OF THE ROUND")
                 break
             self.place_letter()
@@ -217,15 +209,14 @@ class Game:
         """
         Executes when player chooses exchange letters option in play_round()
         """
-        correct_numbers = ["1", "2", "3", "4", "5", "6", "7"]
         number_of_letters = IntPrompt.ask(
             "Enter how many letter you want to exchange",
-            choices=correct_numbers,
+            choices=HAND_LETTER_NUMBERS,
         )
         choosen_letter_numbers = [
             IntPrompt.ask(
                 "Enter number of a letter you want to exchange",
-                choices=correct_numbers,
+                choices=HAND_LETTER_NUMBERS,
             )
             for _ in range(number_of_letters)
         ]
@@ -276,7 +267,7 @@ class Game:
         while True:
             if (
                 self.bag.get_left() == 0 and set(self.player.hand.letters)
-            ) == {"_"}:
+            ) == {HAND_EMPTY_LETTER_SYMBOL}:
                 print("END OF THE GAME")
                 self.game_ending()
             self.play_round(round)

@@ -1,43 +1,10 @@
 from bag import Bag
+from constants import LETTERS_BAG_COUNT
 
 
 def test_create_bag():
     bag = Bag()
-    assert bag.inside == {
-        "A": 9,
-        "Ą": 1,
-        "B": 2,
-        "C": 3,
-        "Ć": 1,
-        "D": 3,
-        "E": 7,
-        "Ę": 1,
-        "F": 1,
-        "G": 2,
-        "H": 2,
-        "I": 8,
-        "J": 2,
-        "K": 3,
-        "L": 3,
-        "Ł": 2,
-        "M": 3,
-        "N": 5,
-        "Ń": 1,
-        "O": 6,
-        "Ó": 1,
-        "P": 3,
-        "R": 4,
-        "S": 4,
-        "Ś": 1,
-        "T": 3,
-        "U": 2,
-        "W": 4,
-        "Y": 4,
-        "Z": 5,
-        "Ź": 1,
-        "Ż": 1,
-        "?": 2,
-    }
+    assert bag.inside == LETTERS_BAG_COUNT
 
 
 def test_draw_letter_typical(monkeypatch):

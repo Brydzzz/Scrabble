@@ -1,6 +1,7 @@
 import numpy as np
 from collections import Counter
 from copy import deepcopy
+from constants import BOARD_SIZE, NO_LETTER_SYMBOL
 
 
 class Board:
@@ -17,11 +18,13 @@ class Board:
     """
 
     def __init__(self):
-        self._cells = np.full((16, 16), "___", dtype=np.dtype("U3"))
-        numbers = np.arange(1, 16)
+        self._cells = np.full(
+            (BOARD_SIZE, BOARD_SIZE), NO_LETTER_SYMBOL, dtype=np.dtype("U3")
+        )
+        row_col_numbers = np.arange(1, BOARD_SIZE)
         self._cells[0, 0] = "000"
-        self._cells[0, 1:] = np.char.zfill(numbers.astype(str), 3)
-        self._cells[1:, 0] = np.char.zfill(numbers.astype(str), 3)
+        self._cells[0, 1:] = np.char.zfill(row_col_numbers.astype(str), 3)
+        self._cells[1:, 0] = np.char.zfill(row_col_numbers.astype(str), 3)
         self._words = []
         self._blanks = []
 
@@ -48,7 +51,7 @@ class Board:
         Prints board
         """
         for row in self.cells:
-            row_formatted = " | ".join(row).replace("_", " ")
+            row_formatted = " | ".join(row).replace(NO_LETTER_SYMBOL, " " * 3)
             print(row_formatted)
             print("-" * len(row_formatted))
 
@@ -90,22 +93,38 @@ class Board:
 
     def check_if_cell_empty(self, row: int, col: int):
         """
-        Check if given cell is empty (contains "___")
+        Check if given cell is empty (its value is NO_LETTER_SYMBOL)
         """
-        return self.access_cell(row, col) == "___"
+        return self.access_cell(row, col) == NO_LETTER_SYMBOL
 
     def check_if_letter_around(self, row: int, col: int):
         """
         Check if there is at least one letter around cell
         If given cell is next to number guide, treats
-        number guide values as "___" to avoid false results
+        number guide values as NO_LETTER_SYMBOL to avoid false results
         """
-        left = self.access_cell(row, col - 1) if col - 1 != 0 else "___"
-        up = self.access_cell(row - 1, col) if row - 1 != 0 else "___"
-        right = self.access_cell(row, col + 1) if col + 1 != 16 else "___"
-        down = self.access_cell(row + 1, col) if row + 1 != 16 else "___"
+        left = (
+            self.access_cell(row, col - 1)
+            if col - 1 != 0
+            else NO_LETTER_SYMBOL
+        )
+        up = (
+            self.access_cell(row - 1, col)
+            if row - 1 != 0
+            else NO_LETTER_SYMBOL
+        )
+        right = (
+            self.access_cell(row, col + 1)
+            if col + 1 != BOARD_SIZE
+            else NO_LETTER_SYMBOL
+        )
+        down = (
+            self.access_cell(row + 1, col)
+            if row + 1 != BOARD_SIZE
+            else NO_LETTER_SYMBOL
+        )
         cells = (left, right, up, down)
-        return any(cell != "___" for cell in cells)
+        return any(cell != NO_LETTER_SYMBOL for cell in cells)
 
     def get_word_list_from_dimension(self, dimension_array):
         """
@@ -113,7 +132,9 @@ class Board:
         """
         joined_dimension_array = "".join(dimension_array)
         no_spaces_between_letters = joined_dimension_array.replace(" ", "")
-        words_with_empty_str = no_spaces_between_letters.replace("_", " ")
+        words_with_empty_str = no_spaces_between_letters.replace(
+            NO_LETTER_SYMBOL, " "
+        )
         dimension_words = words_with_empty_str.split()
         return dimension_words
 

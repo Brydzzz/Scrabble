@@ -1,4 +1,5 @@
 from bag import Bag
+from constants import HAND_EMPTY_LETTER_SYMBOL
 
 
 class Hand:
@@ -27,9 +28,9 @@ class Hand:
 
     def remove_letter(self, number):
         """
-        Removes letter from hand - replaces it with "_"
+        Removes letter from hand- replaces it with HAND_EMPTY_LETTER_SYMBOL
         """
-        self._letters[number - 1] = "_"
+        self._letters[number - 1] = HAND_EMPTY_LETTER_SYMBOL
 
     def get_letter(self, number):
         letter = self.letters[number - 1]
@@ -43,11 +44,11 @@ class Hand:
 
     def draw_to_seven_letters(self, bag: Bag):
         """
-        Replaces empty letters ("_") with new randomly drawn letters
+        Replaces empty letters with new randomly drawn letters
         """
         seven_letters = []
         for letter in self.letters:
-            if letter == "_":
+            if letter == HAND_EMPTY_LETTER_SYMBOL:
                 new_letter = bag.draw_letter()
                 letter = new_letter
             seven_letters.append(letter)
