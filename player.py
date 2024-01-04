@@ -61,6 +61,9 @@ class Player:
         self._words.extend(new_words)
 
     def calculate_points(self):
+        """
+        calculate player's points and adds them to points attribute
+        """
         letter_values = LETTERS_VALUES
         total_points = 0
         for word in self.words:

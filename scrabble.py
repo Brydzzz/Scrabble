@@ -29,14 +29,19 @@ class Game:
         player that playes the game
     """
 
-    def __init__(self, player_name: str = None):
+    def __init__(self, game_mode: str, players_names: list[str]):
+        self._game_mode = game_mode
         self._board = Board()
         self._bag = Bag()
-        hand = Hand(self.bag)  # TODO: wylosowac dwie ręce jeśli potrzeba
-        self._player = Player(
-            hand, player_name
-        )  # TODO: atrybut nazywa sie players i ma liste graczy
-        # TODO: dodać paramter tryb gry, bo pomoze z tymi rekami
+        hand = Hand(self.bag)
+        if game_mode == "pvp":
+            second_hand = Hand(self.bag)
+            self._players = [
+                Player(hand, players_names[0]),
+                Player(second_hand, players_names[1]),
+            ]
+        else:
+            self._players = [Player(hand, players_names[0])]
 
     @property
     def board(self):
@@ -47,16 +52,26 @@ class Game:
         return self._bag
 
     @property
-    def player(self):
-        return self._player  # TODO daje liste graczy
+    def game_mode(self):
+        return self._game_mode
 
-    def print_game(self):  # TODO ma w parametrze ktory gracz
+    @property
+    def players(self):
+        return self._players
+
+    def get_player(self, index):
+        return self._players[index]
+
+    def print_game(self, player_index):
         """
         prints board and player's hand
         """
         print("\n Board: \n")
         self.board.print_board()
-        hand_info_message = f"\nYour letters: {self.player.hand}"
+        print(f"{self.get_player(player_index).name.upper()}'s TURN")
+        hand_info_message = (
+            f"\nYour letters: {self.get_player(player_index).hand}"
+        )
         print(hand_info_message)
         letter_number_guide = " | ".join(HAND_LETTER_NUMBERS)
         offset = len(hand_info_message) - 1
@@ -64,15 +79,15 @@ class Game:
         print(self.board.blanks_info())
 
     def validate_place_letter_inputs(
-        self, given_number, given_row, given_col
-    ):  # TODO ma w parametrze ktory gracz
+        self, given_number, given_row, given_col, player_index
+    ):
         """
         Validates player inputs from place_letter() function.
         Returns error message to display and if all requirements are met
         """
         is_field_empty = self.board.check_if_cell_empty(given_row, given_col)
         is_letter_not_empty = (
-            self.player.hand.get_letter(given_number)
+            self.get_player(player_index).hand.get_letter(given_number)
             != HAND_EMPTY_LETTER_SYMBOL
         )
         is_adjacent_to_letter = (
@@ -96,14 +111,12 @@ class Game:
 
         return all(inputs_correct), "\n".join(messages)
 
-    def check_one_word_rule(
-        self, board_before_moves
-    ):  # TODO ma w parametrze ktory gracz
+    def check_one_word_rule(self, board_before_moves, player_index):
         """
         Returns True if player didn't break add letter to only one word rule
         else returns False
         """
-        played_cells = self.player.played_cells
+        played_cells = self.get_player(player_index).played_cells
         row_list = [cell[0] for cell in played_cells]
         col_list = [cell[1] for cell in played_cells]
         if len(set(row_list)) == 1:
@@ -127,7 +140,7 @@ class Game:
         else:
             return False
 
-    def place_letter(self):  # TODO ma w parametrze ktory gracz
+    def place_letter(self, player_index):
         """
         Gets input from player and places letter on board.
         Then prints updated board
@@ -144,48 +157,62 @@ class Game:
             given_row = IntPrompt.ask("Row number", choices=ROW_COL_NUMBERS)
             given_col = IntPrompt.ask("Column number", choices=ROW_COL_NUMBERS)
         inputs_correct, player_message = self.validate_place_letter_inputs(
-            given_number, given_row, given_col
+            given_number, given_row, given_col, player_index
         )
         if inputs_correct:
-            letter = self.player.hand.get_letter(given_number)
+            letter = self.get_player(player_index).hand.get_letter(
+                given_number
+            )
             if letter == "?":
                 blank_value = Prompt.ask(
                     "What letter should blank be?",
                     choices=BLANK_POSSIBLE_VALUES,
                 )
                 self.board.add_blank_info(given_row, given_col, blank_value)
-            self.player.hand.remove_letter(given_number)
+            self.get_player(player_index).hand.remove_letter(given_number)
             self.board.update_board(letter, given_row, given_col)
-            self.player.add_played_cell((given_row, given_col))
-            self.print_game()
+            self.get_player(player_index).add_played_cell(
+                (given_row, given_col)
+            )
+            self.print_game(player_index)
         else:
             rprint("[bold red]\nERROR[/bold red]")
             print(player_message)
             print("\nTry again, but with correct input\n")
-            self.place_letter()
+            self.place_letter(player_index)
 
     def game_to_previous_state(
-        self, hand_before_moves, board_before_moves, blanks_before_moves
-    ):  # TODO ma w parametrze ktory gracz
+        self,
+        hand_before_moves,
+        board_before_moves,
+        blanks_before_moves,
+        player_index,
+    ):
         """
         Changes hand, board and blanks to previous state
         """
-        self.player.hand.hand_to_previous_state(hand_before_moves)
+        self.get_player(player_index).hand.hand_to_previous_state(
+            hand_before_moves
+        )
         self.board.board_to_previous_state(board_before_moves)
         self.board.blanks_to_previous_state(blanks_before_moves)
 
-    def place_letter_round(self):  # TODO ma w parametrze ktory gracz
+    def place_letter_round(self, player_index):
         """
         When player chooses place letter option in play_round() this executes.
         """
-        hand_before_moves = deepcopy(self.player.hand.letters)
+        hand_before_moves = deepcopy(
+            self.get_player(player_index).hand.letters
+        )
         board_before_moves = deepcopy(self.board.cells)
         blanks_before_moves = deepcopy(self.board.blanks)
         while True:
-            if set(self.player.hand.letters) == {HAND_EMPTY_LETTER_SYMBOL}:
+            if set(self.get_player(player_index).hand.letters) == {
+                HAND_EMPTY_LETTER_SYMBOL
+            }:
                 print("NO LETTERS LEFT - END OF THE ROUND")
                 break
-            self.place_letter()
+            self.place_letter(player_index)
             print("Place another letter [1] or end round [2]\n")
             option = IntPrompt.ask(
                 "Enter your choice here", choices=["1", "2"]
@@ -193,30 +220,38 @@ class Game:
             if option == 2:
                 break
         new_words = self.board.find_possible_new_words(
-            self.player.played_cells
+            self.get_player(player_index).played_cells
         )
-        one_word_rule = self.check_one_word_rule(board_before_moves)
+        one_word_rule = self.check_one_word_rule(
+            board_before_moves, player_index
+        )
         print("Checking the words...")
         all_words_correct = check_the_words(new_words)
         if not one_word_rule:
             print("You added letters to more than one word")
             self.game_to_previous_state(
-                hand_before_moves, board_before_moves, blanks_before_moves
+                hand_before_moves,
+                board_before_moves,
+                blanks_before_moves,
+                player_index,
             )
         elif not all_words_correct or not new_words:
             print("Your letters don't form allowed words")
             rprint("You lose your move in this round :cry:")
             self.game_to_previous_state(
-                hand_before_moves, board_before_moves, blanks_before_moves
+                hand_before_moves,
+                board_before_moves,
+                blanks_before_moves,
+                player_index,
             )
         else:
             print("Everything all right!!!")
             player_words = self.board.get_player_words()
-            self.player.add_words(player_words)
+            self.get_player(player_index).add_words(player_words)
             self.board.update_words()
-        self.player.reset_played_cells()
+        self.get_player(player_index).reset_played_cells()
 
-    def exchange_letters_round(self):  # TODO ma w parametrze ktory gracz
+    def exchange_letters_round(self, player_index):
         """
         Executes when player chooses exchange letters option in play_round()
         """
@@ -232,45 +267,78 @@ class Game:
             for _ in range(number_of_letters)
         ]
         for letter_number in choosen_letter_numbers:
-            exchanged_letter = self.player.hand.get_letter(letter_number)
+            exchanged_letter = self.get_player(player_index).hand.get_letter(
+                letter_number
+            )
             try:
                 new_letter = self.bag.exchange_letter(exchanged_letter)
-                self._player._hand.replace_letter(
+                self._players[player_index]._hand.replace_letter(
                     new_letter, letter_number - 1
                 )
             except KeyError:
                 print(f"Cannot exchange letter with number {letter_number}")
                 pass
 
+    def choose_winner(self):
+        self.get_player(0).calculate_points()
+        self.get_player(1).calculate_points()
+        first_player_points = self.get_player(0).points
+        second_player_points = self.get_player(1).points
+        if first_player_points > second_player_points:
+            winner = self.get_player(0).name
+            loser = self.get_player(1).name
+            winner_points = first_player_points
+            loser_points = second_player_points
+        elif first_player_points < second_player_points:
+            winner = self.get_player(1).name
+            loser = self.get_player(0).name
+            winner_points = second_player_points
+            loser_points = first_player_points
+        else:
+            return "draw", first_player_points
+        return winner, loser, winner_points, loser_points
+
     def game_ending(self):
         """
-        displayes end game message and quits game
+        displays end game message and quits game
         """
-        self.player.calculate_points()
-        points = self.player.points
-        # TODO: display end message for all players, maybe writes who wins
-        print(f"Congrats {self.player.name}! Your score is: {points}")
+        if self.game_mode == "pvp":
+            result = self.choose_winner()
+            if result[0] == "draw":
+                points = result[1]
+                print(f"It's a draw! You both scored {points}")
+            else:
+                winner, loser, winner_points, loser_points = result
+                print(f"{winner} is the winner! They scored {winner_points}")
+                print(f"{loser} lost this time :( They scored {loser_points}")
+        else:
+            self.get_player(0).calculate_points()
+            points = self.player.points
+            print(
+                f"Congrats {self.get_player(0).name}! Your score is: {points}"
+            )
         exit()
 
-    def play_round(self, round):  # TODO ma w parametrze ktory gracz
+    def play_round(self, round, player_index):
         """
         method responsible for player's journey
         """
         print(f"\nROUND: {round}")
-        self.print_game()
+        self.print_game(player_index)
         print("What do you want to do?")
         print("[1] Place letters")
         print("[2] Exchange letters")
         print("[3] End game")
+        # TODO opcja end game dostepna tylko do wyboru przez pierwszego gracza
         action = IntPrompt.ask("Enter number here", choices=["1", "2", "3"])
         if action == 1:
-            self.place_letter_round()
-            self.player.hand.draw_to_seven_letters(self._bag)
+            self.place_letter_round(player_index)
+            self.get_player(player_index).hand.draw_to_seven_letters(self._bag)
         elif action == 2:
             if self.bag.get_left() == 0:
                 print("CANNOT EXCHANGE LETTERS - BAG IS EMPTY")
             else:
-                self.exchange_letters_round()
+                self.exchange_letters_round(player_index)
         else:
             self.game_ending()
 
@@ -282,13 +350,25 @@ class Game:
             ) == {HAND_EMPTY_LETTER_SYMBOL}:
                 print("END OF THE GAME")
                 self.game_ending()
-            self.play_round(round)
-            # TODO kolejne wywołanie play_round w trybie pvp
+            if self.game_mode == "single":
+                self.play_round(round, 0)
+            else:
+                self.play_round(round, 0)
+                self.play_round(round, 1)
             round += 1
 
 
 if __name__ == "__main__":
-    # TODO zapytanie o tryb gry, odpowiednio pytam sie o imie raz lub dwa razy
-    player_name = input("Enter your name: ")
-    game = Game(player_name)  # TODO do game mogę podać też game_mode
+    game_mode = Prompt.ask(
+        "Choose game mode: singleplayer, player vs player (pvp)",
+        choices=["single", "pvp"],
+    )
+    if game_mode == "single":
+        player_name = input("Enter your name: ")
+        game = Game(game_mode, player_name)
+    else:
+        first_player_name = input("First player, enter your name: ")
+        second_player_name = input("Second player, enter your name: ")
+        players_names = [first_player_name, second_player_name]
+        game = Game(game_mode, players_names)
     game.play_game()
