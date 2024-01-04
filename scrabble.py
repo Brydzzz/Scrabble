@@ -32,8 +32,11 @@ class Game:
     def __init__(self, player_name: str = None):
         self._board = Board()
         self._bag = Bag()
-        hand = Hand(self.bag)
-        self._player = Player(hand, player_name)
+        hand = Hand(self.bag)  # TODO: wylosowac dwie ręce jeśli potrzeba
+        self._player = Player(
+            hand, player_name
+        )  # TODO: atrybut nazywa sie players i ma liste graczy
+        # TODO: dodać paramter tryb gry, bo pomoze z tymi rekami
 
     @property
     def board(self):
@@ -45,9 +48,9 @@ class Game:
 
     @property
     def player(self):
-        return self._player
+        return self._player  # TODO daje liste graczy
 
-    def print_game(self):
+    def print_game(self):  # TODO ma w parametrze ktory gracz
         """
         prints board and player's hand
         """
@@ -60,7 +63,9 @@ class Game:
         print(f"| {letter_number_guide} |".rjust(offset) + "\n")
         print(self.board.blanks_info())
 
-    def validate_place_letter_inputs(self, given_number, given_row, given_col):
+    def validate_place_letter_inputs(
+        self, given_number, given_row, given_col
+    ):  # TODO ma w parametrze ktory gracz
         """
         Validates player inputs from place_letter() function.
         Returns error message to display and if all requirements are met
@@ -91,7 +96,9 @@ class Game:
 
         return all(inputs_correct), "\n".join(messages)
 
-    def check_one_word_rule(self, board_before_moves):
+    def check_one_word_rule(
+        self, board_before_moves
+    ):  # TODO ma w parametrze ktory gracz
         """
         Returns True if player didn't break add letter to only one word rule
         else returns False
@@ -120,7 +127,7 @@ class Game:
         else:
             return False
 
-    def place_letter(self):
+    def place_letter(self):  # TODO ma w parametrze ktory gracz
         """
         Gets input from player and places letter on board.
         Then prints updated board
@@ -159,7 +166,7 @@ class Game:
 
     def game_to_previous_state(
         self, hand_before_moves, board_before_moves, blanks_before_moves
-    ):
+    ):  # TODO ma w parametrze ktory gracz
         """
         Changes hand, board and blanks to previous state
         """
@@ -167,7 +174,7 @@ class Game:
         self.board.board_to_previous_state(board_before_moves)
         self.board.blanks_to_previous_state(blanks_before_moves)
 
-    def place_letter_round(self):
+    def place_letter_round(self):  # TODO ma w parametrze ktory gracz
         """
         When player chooses place letter option in play_round() this executes.
         """
@@ -209,7 +216,7 @@ class Game:
             self.board.update_words()
         self.player.reset_played_cells()
 
-    def exchange_letters_round(self):
+    def exchange_letters_round(self):  # TODO ma w parametrze ktory gracz
         """
         Executes when player chooses exchange letters option in play_round()
         """
@@ -241,10 +248,11 @@ class Game:
         """
         self.player.calculate_points()
         points = self.player.points
+        # TODO: display end message for all players, maybe writes who wins
         print(f"Congrats {self.player.name}! Your score is: {points}")
         exit()
 
-    def play_round(self, round):
+    def play_round(self, round):  # TODO ma w parametrze ktory gracz
         """
         method responsible for player's journey
         """
@@ -275,10 +283,12 @@ class Game:
                 print("END OF THE GAME")
                 self.game_ending()
             self.play_round(round)
+            # TODO kolejne wywołanie play_round w trybie pvp
             round += 1
 
 
 if __name__ == "__main__":
+    # TODO zapytanie o tryb gry, odpowiednio pytam sie o imie raz lub dwa razy
     player_name = input("Enter your name: ")
-    game = Game(player_name)
+    game = Game(player_name)  # TODO do game mogę podać też game_mode
     game.play_game()
