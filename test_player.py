@@ -34,7 +34,8 @@ def test_add_words():
 def test_calculate_points():
     bag = Bag()
     hand = Hand(bag)
+    hand._letters = ["A", "A", "A", "A", "A", "A", "A"]
     player = Player(hand, "John", ["hęllo", "world"])
     assert player.words == ["hęllo", "world"]
     player.calculate_points()
-    assert player.points == 20
+    assert player.points == 13

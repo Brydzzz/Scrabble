@@ -66,7 +66,13 @@ class Player:
         """
         letter_values = LETTERS_VALUES
         total_points = 0
+        minus_points = 0
+        word_points = 0
         for word in self.words:
             for char in word.upper():
-                total_points += letter_values.get(char, 0)
+                word_points += letter_values.get(char, 0)
+        for letter in self.hand.letters:
+            minus_points += letter_values.get(letter, 0)
+        total_points = word_points - minus_points
+        total_points = total_points if total_points > 0 else 0
         self._points = total_points

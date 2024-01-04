@@ -25,8 +25,10 @@ class Game:
         game's board
     bag : Bag
         game's bag
-    player: Player
-        player that playes the game
+    players: list[Player]
+        list of players in the game
+    game_mode : str
+        selected game mode - "pvp" or "single"
     """
 
     def __init__(self, game_mode: str, players_names: list[str]):
@@ -60,9 +62,16 @@ class Game:
         return self._players
 
     def get_player(self, index):
+        """
+        returns Player object from players attribute
+        """
         return self._players[index]
 
     def check_if_players_hands_empty(self):
+        """
+        returns True if any of players' hand is empty
+        else returns False
+        """
         for player in self.players:
             if set(player.hand.letters) == {HAND_EMPTY_LETTER_SYMBOL}:
                 return True
@@ -286,6 +295,10 @@ class Game:
                 pass
 
     def choose_winner(self):
+        """
+        this function is called in pvp mode
+        returns winner and loser of the game and their points
+        """
         self.get_player(0).calculate_points()
         self.get_player(1).calculate_points()
         first_player_points = self.get_player(0).points
@@ -306,7 +319,7 @@ class Game:
 
     def game_ending(self):
         """
-        displays end game message and quits game
+        displays endgame message and quits game
         """
         if self.game_mode == "pvp":
             result = self.choose_winner()
@@ -371,7 +384,7 @@ if __name__ == "__main__":
     )
     if game_mode == "single":
         player_name = input("Enter your name: ")
-        game = Game(game_mode, player_name)
+        game = Game(game_mode, [player_name])
     else:
         first_player_name = input("First player, enter your name: ")
         second_player_name = input("Second player, enter your name: ")
