@@ -18,6 +18,7 @@ def test_update_board():
 def test_board_to_previous_state():
     board = Board()
     previous_board = deepcopy(board.cells)
+    assert board.access_cell(3, 4) == NO_LETTER_SYMBOL
     board.update_board("A", 3, 4)
     assert board.access_cell(3, 4) == " A "
     board.board_to_previous_state(previous_board)
