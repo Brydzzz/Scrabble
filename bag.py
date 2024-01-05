@@ -25,7 +25,7 @@ class Bag:
         If letter is not available (its count is 0),
         draws another letter
         If there no letters left in bag
-        returns HAND_EMPTY_LETTER_SYMBOL from constans
+        returns HAND_EMPTY_LETTER_SYMBOL from constants
         """
         if self.get_left() == 0:
             return HAND_EMPTY_LETTER_SYMBOL
