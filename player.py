@@ -19,9 +19,7 @@ class Player:
         player's hand - letters they have
     """
 
-    def __init__(
-        self, hand: Hand, name: str = "Player  1", words: list[str] = None
-    ):
+    def __init__(self, hand: Hand, name: str, words: list[str] = None):
         self._name = name
         self._words = words if words else []
         self._points = 0
@@ -57,7 +55,7 @@ class Player:
     def set_words(self, new_words: list[str]):
         self._words = new_words
 
-    def add_words(self, new_words):
+    def add_words(self, new_words: list[str]):
         self._words.extend(new_words)
 
     def calculate_points(self):
