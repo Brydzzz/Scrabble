@@ -67,7 +67,7 @@ def check_if_words_allowed(file_handle, words):
 
 def check_the_words(words):
     """
-    Returns True if words are in allowed_words(are in words_binary.txt file)
+    Returns True if words are in allowed_words(are in WORDS_BINARY .txt file)
     else return False
     """
     with open(WORDS_BINARY, "r", encoding="UTF-8") as file:
