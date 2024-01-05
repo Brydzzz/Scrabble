@@ -28,7 +28,7 @@ class Hand:
 
     def remove_letter(self, number):
         """
-        Removes letter from hand- replaces it with HAND_EMPTY_LETTER_SYMBOL
+        Removes letter from hand - replaces it with HAND_EMPTY_LETTER_SYMBOL
         """
         self._letters[number - 1] = HAND_EMPTY_LETTER_SYMBOL
 
