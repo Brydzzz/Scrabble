@@ -61,7 +61,7 @@ def test_check_one_word_added_to_end_and_start_row():
     assert game.check_one_word_rule(board_before_moves, 0) is True
 
 
-def test_check_one_word_adde_to_two_words_row():
+def test_check_one_word_added_to_two_words_row():
     game = Game("single", "player1")
     game.board.update_board(" X ", 3, 7)
     game.board.update_board(" X ", 3, 10)
@@ -76,7 +76,7 @@ def test_check_one_word_adde_to_two_words_row():
     assert game.check_one_word_rule(board_before_moves, 0) is False
 
 
-def test_check_one_word_adde_to_two_words_col():
+def test_check_one_word_added_to_two_words_col():
     game = Game("single", "player1")
     game.board.update_board(" X ", 7, 3)
     game.board.update_board(" X ", 10, 3)
