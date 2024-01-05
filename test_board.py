@@ -1,4 +1,65 @@
 from board import Board
+from copy import deepcopy
+from constants import NO_LETTER_SYMBOL
+
+
+def test_create_board():
+    board = Board()
+    assert board.words == []
+    assert board.blanks == []
+
+
+def test_update_board():
+    board = Board()
+    board.update_board("A", 3, 4)
+    assert board.access_cell(3, 4) == " A "
+
+
+def test_board_to_previous_state():
+    board = Board()
+    previous_board = deepcopy(board.cells)
+    board.update_board("A", 3, 4)
+    assert board.access_cell(3, 4) == " A "
+    board.board_to_previous_state(previous_board)
+    assert board.access_cell(3, 4) == NO_LETTER_SYMBOL
+
+
+def test_add_blank_info():
+    board = Board()
+    board.add_blank_info(3, 4, " A ")
+    board.add_blank_info(1, 8, " T ")
+    assert (3, 4, " A ") in board.blanks
+    assert (1, 8, " T ") in board.blanks
+
+
+def test_blanks_info():
+    board = Board()
+    board.add_blank_info(3, 4, " A ")
+    board.add_blank_info(1, 8, " T ")
+    assert (3, 4, " A ") in board.blanks
+    assert (1, 8, " T ") in board.blanks
+    info = board.blanks_info()
+    assert info == (
+        "Blanks Info:\n"
+        "Blank in row 3 and column 4 is A\n"
+        "Blank in row 1 and column 8 is T\n"
+    )
+
+
+def test_blanks_to_previous_state():
+    board = Board()
+    previous_blanks = deepcopy(board.blanks)
+    board.add_blank_info(3, 4, " A ")
+    assert (3, 4, " A ") in board.blanks
+    board.blanks_to_previous_state(previous_blanks)
+    assert board.blanks == previous_blanks
+
+
+def test_check_if_cell_empty():
+    board = Board()
+    board.update_board("A", 3, 4)
+    assert board.check_if_cell_empty(3, 4) is False
+    assert board.check_if_cell_empty(3, 5) is True
 
 
 def test_check_if_letter_around_typical():
@@ -41,7 +102,7 @@ def test_check_if_letter_around_corners_false():
     assert down_right is False
 
 
-def test_find_words_in_rows():
+def test_find_all_words_in_rows():
     board = Board()
     board.update_board(" A ", 8, 8)
     board.update_board(" L ", 8, 9)
@@ -55,7 +116,7 @@ def test_find_words_in_rows():
     assert words == ["ALA", "MA", "DOM"]
 
 
-def test_find_words_in_cols():
+def test_find_all_words_in_cols():
     board = Board()
     board.update_board(" A ", 8, 8)
     board.update_board(" L ", 9, 8)
@@ -69,7 +130,7 @@ def test_find_words_in_cols():
     assert words == ["ALA", "MA", "DOM"]
 
 
-def test_find_words():
+def test_find_all_words():
     board = Board()
     board.update_board(" A ", 8, 8)
     board.update_board(" L ", 9, 8)
