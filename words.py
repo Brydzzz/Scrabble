@@ -1,4 +1,5 @@
 from math import floor
+from constants import WORDS_BINARY, ALLOWED_WORDS
 
 
 def export_words_less_than_lenght(file_handle, word_length):
@@ -19,7 +20,7 @@ def sort_words_for_binary_search(file_handle):
     """
     allowed_words = [line.strip() for line in file_handle.readlines()]
     allowed_words.sort()
-    with open("words_binary.txt", "w", encoding="UTF-8") as file:
+    with open(WORDS_BINARY, "w", encoding="UTF-8") as file:
         for word in allowed_words:
             file.write(f"{word}\n")
 
@@ -69,16 +70,11 @@ def check_the_words(words):
     Returns True if words are in allowed_words(are in words_binary.txt file)
     else return False
     """
-    with open("words_binary.txt", "r", encoding="UTF-8") as file:
+    with open(WORDS_BINARY, "r", encoding="UTF-8") as file:
         allowed_words = [line.strip() for line in file.readlines()]
         return check_if_words_allowed_binary(allowed_words, words)
 
 
 if __name__ == "__main__":
-    # with open("words.txt", "r", encoding="UTF-8") as file:
-    #     export_words_less_than_lenght(file, 6)
-    # with open("words.txt", "r", encoding="UTF-8") as file:
-    #     sort_words_for_binary_search(file)
-    my_words = ["ŻAK", "OSM", "RABARBAR"]
-    result = check_the_words(my_words)
-    print(result)
+    with open(ALLOWED_WORDS, "r", encoding="UTF-8") as file:
+        sort_words_for_binary_search(file)

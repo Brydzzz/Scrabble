@@ -118,3 +118,7 @@ HAND_EMPTY_LETTER_SYMBOL = "_"
 NO_LETTER_SYMBOL = (
     "___"  # its length has to be 3, cannot contain space, letters or ?
 )
+
+# names of files with word list
+WORDS_BINARY = "word_binary.txt"
+ALLOWED_WORDS = "word.txt"
