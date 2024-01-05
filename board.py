@@ -70,7 +70,8 @@ class Board:
         """
         if self.blanks:
             blank_descriptions = [
-                f"Blank in {blank[0]} row and {blank[1]} column is {blank[2]}"
+                f"Blank in row {blank[0]} and column {blank[1]}"
+                f" is {blank[2].strip()}"
                 for blank in self.blanks
             ]
 
@@ -89,7 +90,7 @@ class Board:
         """
         Returns the value of cell for given row and col
         """
-        return self.cells[row, col]
+        return self._cells[row, col]
 
     def check_if_cell_empty(self, row: int, col: int):
         """
