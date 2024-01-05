@@ -120,5 +120,5 @@ NO_LETTER_SYMBOL = (
 )
 
 # names of files with word list
-WORDS_BINARY = "word_binary.txt"
-ALLOWED_WORDS = "word.txt"
+WORDS_BINARY = "words_binary.txt"
+ALLOWED_WORDS = "words.txt"
