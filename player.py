@@ -49,7 +49,7 @@ class Player:
     def reset_played_cells(self):
         self._played_cells = []
 
-    def add_played_cell(self, new_cell: tuple):
+    def add_played_cell(self, new_cell: tuple[int, int]):
         self._played_cells.append(new_cell)
 
     def set_words(self, new_words: list[str]):

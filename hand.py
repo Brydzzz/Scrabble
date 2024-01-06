@@ -26,17 +26,17 @@ class Hand:
         """
         self._letters = previous_letters
 
-    def remove_letter(self, number):
+    def remove_letter(self, number: int):
         """
         Removes letter from hand - replaces it with HAND_EMPTY_LETTER_SYMBOL
         """
         self._letters[number - 1] = HAND_EMPTY_LETTER_SYMBOL
 
-    def get_letter(self, number):
+    def get_letter(self, number: int):
         letter = self.letters[number - 1]
         return letter
 
-    def replace_letter(self, new_letter, index):
+    def replace_letter(self, new_letter: str, index: int):
         """
         Replaces letter specified by index for new_letter
         """

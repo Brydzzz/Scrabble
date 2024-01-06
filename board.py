@@ -55,7 +55,7 @@ class Board:
             print(row_formatted)
             print("-" * len(row_formatted))
 
-    def update_board(self, new_letter, row, col):
+    def update_board(self, new_letter: str, row: int, col: int):
         self._cells[row, col] = f" {new_letter} "
 
     def add_blank_info(self, row: int, col: int, letter_value: str):
@@ -88,7 +88,7 @@ class Board:
 
     def access_cell(self, row: int, col: int):
         """
-        Returns the value of cell for given row and col
+        Returns the value of a cell for given row and col
         """
         return self._cells[row, col]
 

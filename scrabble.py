@@ -63,7 +63,7 @@ class Game:
 
     def get_player(self, index):
         """
-        returns Player object from players attribute
+        returns Player object from _players Game attribute
         """
         return self._players[index]
 
@@ -128,7 +128,7 @@ class Game:
 
     def check_one_word_rule(self, board_before_moves, player_index):
         """
-        Returns True if player didn't break add letter to only one word rule
+        Returns True if player didn't break "add letters to only one word" rule
         else returns False
         """
         played_cells = self.get_player(player_index).played_cells
@@ -296,7 +296,7 @@ class Game:
 
     def choose_winner(self):
         """
-        this function is called in pvp mode
+        this function is called only in pvp mode
         returns winner and loser of the game and their points
         """
         self.get_player(0).calculate_points()
@@ -362,7 +362,7 @@ class Game:
                 self.exchange_letters_round(player_index)
         else:
             self.game_ending()
-            # exit()
+            exit()
 
     def play_game(self):
         round = 1
@@ -384,7 +384,7 @@ class Game:
 
 if __name__ == "__main__":
     game_mode = Prompt.ask(
-        "Choose game mode: singleplayer, player vs player (pvp)",
+        "Choose game mode: singleplayer or player vs player (pvp)",
         choices=["single", "pvp"],
     )
     if game_mode == "single":
