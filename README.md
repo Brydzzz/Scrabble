@@ -40,4 +40,4 @@ Stworzenie gry Scrabble, która:
  - Zamienić testów z [manual_scrabble_tests.py](manual_scrabble_tests.py) na testy automatyczne. Powód: nie udało mi się z mockować inputów gracza
 
 ### Co się zmieniło w stosunku do planowanego rozwiązania
-Planowane rozwiązanie miało zawierać tryb gry z botem, ale po konsultacji z prowadzącym tą funkcjonalność zamieniłam na tryb dla dwóch graczy.
+Planowane rozwiązanie miało zawierać tryb gry z botem, ale po konsultacji z prowadzącym zamiast tej funkcjonalność miałam zrobić tryb dla dwóch graczy.
