@@ -47,4 +47,4 @@ Stworzenie gry Scrabble, która:
 
 ### Co się zmieniło w stosunku do planowanego rozwiązania
 
-Planowane rozwiązanie miało zawierać tryb gry z botem, ale po konsultacji z prowadzącym zamiast tej funkcjonalność miałam zrobić tryb dla dwóch graczy.
+Planowane rozwiązanie miało zawierać tryb gry z botem, ale po konsultacji z prowadzącym zamiast tej funkcjonalności miałam zrobić tryb dla dwóch graczy.
