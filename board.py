@@ -87,7 +87,7 @@ class Board:
             blank_descriptions = "\n".join(blank_descriptions)
         else:
             blank_descriptions = "There are no blanks on board"
-        return f"Blanks Info:\n{blank_descriptions}\n"
+        return f"[bold]Blanks Info:[/bold]\n{blank_descriptions}\n"
 
     def blanks_to_previous_state(self, previous_blanks):
         """

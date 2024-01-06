@@ -263,8 +263,9 @@ def test_game_ending_single(capsys):
     game = Game("single", ["john"])
     game.game_ending()
     captured = capsys.readouterr()
-    output = captured.out.strip()
-    assert output == "Congrats john! Your score is: 0"
+    outputs = captured.out.strip().split("\n")
+    assert "Congrats john!" in outputs[0]
+    assert outputs[1] == "Your score is: 0"
 
 
 def test_game_ending_pvp_winner(capsys):
@@ -285,9 +286,9 @@ def test_game_ending_pvp_winner(capsys):
     winner_score_msg = all_outputs[1]
     loser_msg = all_outputs[2]
     loser_score_msg = all_outputs[3]
-    assert winner_msg == "john is the winner!"
+    assert "john is the winner!" in winner_msg
     assert winner_score_msg == "john's score is: 40"
-    assert loser_msg == "ben lost this time :("
+    assert "ben lost this time" in loser_msg
     assert loser_score_msg == "ben's score is: 23"
 
 

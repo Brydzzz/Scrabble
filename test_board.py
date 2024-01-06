@@ -41,7 +41,7 @@ def test_blanks_info():
     assert (1, 8, " T ") in board.blanks
     info = board.blanks_info()
     assert info == (
-        "Blanks Info:\n"
+        "[bold]Blanks Info:[/bold]\n"
         "A in row 3 and column 4 is a blank\n"
         "T in row 1 and column 8 is a blank\n"
     )

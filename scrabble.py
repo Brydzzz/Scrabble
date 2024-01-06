@@ -83,7 +83,7 @@ class Game:
         """
         print("\n Board: \n")
         self.board.print_board()
-        print(f"{self.get_player(player_index).name.upper()}'s TURN")
+        rprint(f"[bold]{self.get_player(player_index).name.upper()}'s TURN")
         hand_info_message = (
             f"\nYour letters: {self.get_player(player_index).hand}"
         )
@@ -91,7 +91,7 @@ class Game:
         letter_number_guide = " | ".join(HAND_LETTER_NUMBERS)
         offset = len(hand_info_message) - 1
         print(f"| {letter_number_guide} |".rjust(offset) + "\n")
-        print(self.board.blanks_info())
+        rprint(self.board.blanks_info())
 
     def validate_place_letter_inputs(
         self, given_number, given_row, given_col, player_index
@@ -243,7 +243,7 @@ class Game:
         print("Checking the words...")
         all_words_correct = check_the_words(new_words)
         if not one_word_rule:
-            print("You added letters to more than one word")
+            rprint("You added letters to more than one word :angry_face:")
             self.game_to_previous_state(
                 hand_before_moves,
                 board_before_moves,
@@ -327,27 +327,26 @@ class Game:
             result = self.choose_winner()
             if result[0] is True:
                 points = result[1]
-                print(f"It's a draw! You both scored {points}")
+                rprint(f"[bold]It's a draw! You both scored {points}")
             else:
                 _, winner, loser, winner_points, loser_points = result
-                print(f"{winner} is the winner!")
+                rprint(f":party_popper: [bold]{winner} is the winner!")
                 print(f"{winner}'s score is: {winner_points}")
-                print(f"{loser} lost this time :(")
+                rprint(f"{loser} lost this time :cry:")
                 print(f"{loser}'s score is: {loser_points}")
         else:
             self.get_player(0).calculate_points()
             points = self.get_player(0).points
-            print(
-                f"Congrats {self.get_player(0).name}! Your score is: {points}"
-            )
+            rprint(f":party_popper: [bold]Congrats {self.get_player(0).name}!")
+            print(f"Your score is: {points}")
 
     def play_round(self, round, player_index):
         """
         method responsible for player's journey
         """
-        print(f"\nROUND: {round}")
+        rprint(f"[bold]\nROUND: {round}[bold/]")
         self.print_game(player_index)
-        print("What do you want to do?")
+        rprint("[bold]What do you want to do?[bold/]")
         print("[1] Place letters")
         print("[2] Exchange letters")
         print("[3] End game")
@@ -384,7 +383,7 @@ class Game:
 
 if __name__ == "__main__":
     game_mode = Prompt.ask(
-        "Choose game mode: singleplayer or player vs player (pvp)",
+        "Choose game mode: SINGLEPLAYER or PLAYER VS PLAYER (pvp)",
         choices=["single", "pvp"],
     )
     if game_mode == "single":
