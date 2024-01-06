@@ -303,6 +303,7 @@ class Game:
         self.get_player(1).calculate_points()
         first_player_points = self.get_player(0).points
         second_player_points = self.get_player(1).points
+        if_draw = False
         if first_player_points > second_player_points:
             winner = self.get_player(0).name
             loser = self.get_player(1).name
@@ -314,8 +315,9 @@ class Game:
             winner_points = second_player_points
             loser_points = first_player_points
         else:
-            return "draw", first_player_points
-        return winner, loser, winner_points, loser_points
+            if_draw = True
+            return if_draw, first_player_points
+        return if_draw, winner, loser, winner_points, loser_points
 
     def game_ending(self):
         """
@@ -323,20 +325,21 @@ class Game:
         """
         if self.game_mode == "pvp":
             result = self.choose_winner()
-            if result[0] == "draw":
+            if result[0] is True:
                 points = result[1]
                 print(f"It's a draw! You both scored {points}")
             else:
-                winner, loser, winner_points, loser_points = result
-                print(f"{winner} is the winner! They scored {winner_points}")
-                print(f"{loser} lost this time :( They scored {loser_points}")
+                _, winner, loser, winner_points, loser_points = result
+                print(f"{winner} is the winner!")
+                print(f"{winner}'s score is: {winner_points}")
+                print(f"{loser} lost this time :(")
+                print(f"{loser}'s score is: {loser_points}")
         else:
             self.get_player(0).calculate_points()
             points = self.get_player(0).points
             print(
                 f"Congrats {self.get_player(0).name}! Your score is: {points}"
             )
-        exit()
 
     def play_round(self, round, player_index):
         """
@@ -359,6 +362,7 @@ class Game:
                 self.exchange_letters_round(player_index)
         else:
             self.game_ending()
+            # exit()
 
     def play_game(self):
         round = 1
@@ -369,6 +373,7 @@ class Game:
             ):
                 print("END OF THE GAME")
                 self.game_ending()
+                exit()
             if self.game_mode == "single":
                 self.play_round(round, 0)
             else:
