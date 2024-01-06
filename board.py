@@ -50,8 +50,17 @@ class Board:
         """
         Prints board
         """
-        for row in self.cells:
-            row_formatted = " | ".join(row).replace(NO_LETTER_SYMBOL, " " * 3)
+        for row_num, row in enumerate(self.cells):
+            row_list = []
+            for column, item in enumerate(row):
+                if item == " ? ":
+                    for blank in self.blanks:
+                        if blank[0] == row_num and blank[1] == column:
+                            item = f" {blank[2]} "
+                row_list.append(item)
+            row_formatted = " | ".join(row_list).replace(
+                NO_LETTER_SYMBOL, " " * 3
+            )
             print(row_formatted)
             print("-" * len(row_formatted))
 
@@ -70,8 +79,8 @@ class Board:
         """
         if self.blanks:
             blank_descriptions = [
-                f"Blank in row {blank[0]} and column {blank[1]}"
-                f" is {blank[2].strip()}"
+                f"{blank[2].strip()} in row {blank[0]} and column {blank[1]}"
+                f" is a blank"
                 for blank in self.blanks
             ]
 
